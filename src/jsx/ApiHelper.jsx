@@ -10,15 +10,15 @@ export function useApiHelper() {
   useEffect(() => {
     const storedUser = storage.load('profile');
     const storedToken = storage.load('token');
-
+ 
     if (storedUser) {
-      setUser(storedUser);
+       setUser(storedUser);
     }
-
+ 
     if (storedToken) {
-      setToken(storedToken);
+       setToken(storedToken);
     }
-  }, []);
+ }, [setUser, setToken]); 
 
   const apiRequest = async (url, options = {}) => {
     const headers = {
