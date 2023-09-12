@@ -1,9 +1,11 @@
 // App.js
+
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from '../src/jsx/components/Layout.jsx';
 import Home from '../src/jsx/pages/Home.jsx';
-import RegisterForm from '../src/jsx/pages/Register.jsx'; // Import your RegisterForm component
+import LoginForm from '../src/jsx/pages/Login.jsx';
+import RegisterForm from '../src/jsx/pages/Register.jsx';
 
 function App() {
   return (
@@ -11,7 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="register" element={<RegisterForm />} /> {/* Register route */}
+          <Route path="login" element={<LoginForm />} /> 
+          <Route path="register" element={<RegisterForm />} /> 
         </Route>
       </Routes>
     </React.StrictMode>
@@ -19,3 +22,4 @@ function App() {
 }
 
 export default App;
+
