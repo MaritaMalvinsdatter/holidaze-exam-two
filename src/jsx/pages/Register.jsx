@@ -24,7 +24,7 @@ const RegisterForm = () => {
       name: '',
       email: '',
       password: '',
-      avatar: null,
+      avatar: '',
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
