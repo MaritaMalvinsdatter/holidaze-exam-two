@@ -19,6 +19,7 @@ function Venues() {
         const response = await fetch(url);
         const json = await response.json();
         setVenues(json);
+        console.log(json);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
