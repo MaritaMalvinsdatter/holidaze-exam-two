@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-const url = 'https://api.noroff.dev/api/v1/holidaze/venues';
+const url = 'https://api.noroff.dev/api/v1/holidaze/venues?limit=100';
 
 function Venues() {
   const [Venues, setVenues] = useState([]);
@@ -18,8 +18,11 @@ function Venues() {
         setIsLoading(true);
         const response = await fetch(url);
         const json = await response.json();
-        setVenues(json);
-        console.log(json);
+        const sortedVenues = json.sort((a, b) => new Date(b.created) - new Date(a.created));// sorted by date created
+        const venuesWithMedia = sortedVenues.filter(venue => venue.media && venue.media.length > 0); // only diplay venues with images
+        const limitedVenues = venuesWithMedia.slice(0, 100);
+        setVenues(limitedVenues);
+        // console.log(limitedVenues);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
