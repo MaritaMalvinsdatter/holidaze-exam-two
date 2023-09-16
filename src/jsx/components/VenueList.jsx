@@ -1,6 +1,7 @@
 // Venues.jsx
 
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
@@ -45,7 +46,9 @@ function Venues() {
     <div>
       {Venues.map((Venue) => (
         <div key={Venue.id}>
-          <h2>{Venue.name}</h2>
+          <Link to={`/venue/${Venue.id}`}>
+            <h2>{Venue.name}</h2>
+          </Link>
           <p>{Venue.description}</p>
           <div>
             <Carousel>
