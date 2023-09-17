@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE, API_PROFILE } from '../EndPoints';
 import { Container, Row, Col } from 'react-bootstrap';
+import logout from '../ApiHelper';
 
 function ProfilePage() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
-  
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -17,8 +18,6 @@ function ProfilePage() {
                     setError(new Error("User name is not found in localStorage."));
                     return;
                 }
-        
-                console.log(API_BASE + API_PROFILE + name);
         
                 const response = await fetch(API_BASE + API_PROFILE + name, {
                     headers: {
@@ -35,24 +34,52 @@ function ProfilePage() {
                 }
         
                 const userData = await response.json();
-                console.log(userData);
                 setUser(userData);
             } catch (error) {
                 console.error("Error fetching user data:", error);
-                setError(error); // Set the error state
+                setError(error); 
             }
         };
     
         fetchUser();
     }, []);
+
+    const handleBecomeManager = async () => {
+       
+        try {
+            const updateURL = `${API_BASE}${API_PROFILE}${user.name}`; 
+            const updatedData = {
+                venueManager: true
+            };
+            const token = localStorage.getItem("token");
+            const response = await fetch(updateURL, {
+                method: 'PUT', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(updatedData),
+            });
+            
     
-  
-    // Show error message if any error occurs
+            if (!response.ok) {
+                throw new Error(`Server responded with a status: ${response.status}`);
+            }
+            
+            setUser({
+                ...user,
+                venueManager: true
+            });
+        } catch (err) {
+            console.error('Error updating user to venue manager:', err);
+            setError(err);
+        }
+    };
+
     if (error) {
         return <div>Error: {error.message}</div>;
     }
 
-    // Show loading state if the profile hasn't been fetched yet
     if (!user) {
         return <div>Loading profile...</div>;
     }
@@ -82,10 +109,18 @@ function ProfilePage() {
                 <Col xs={12}>
                     <p id="profile-email">{user.email}</p>
                 </Col>
+                <Col xs={12}>
+                    {user.venueManager ? 
+                        <p className="font-weight-bold">Venue Manager</p> :
+                        <button onClick={handleBecomeManager}>Become a Venue Manager</button>
+                    }
+                </Col> 
+                <Col xs={12}>
+                    <button onClick={logout}>Logout</button>
+                </Col>
             </Row>
         </Container>
     );
 }
-
 
 export default ProfilePage;
