@@ -57,3 +57,14 @@ export function useApiHelper() {
 
   return { user, token, apiRequest, saveUserAndToken, clearUserAndToken };
 }
+
+const logout = () => {
+  // Clear user and token from local storage
+  localStorage.removeItem("token");
+  localStorage.removeItem("profile");
+
+  // Redirect user to homepage or login page
+  window.location.href = "/"; // redirect to homepage
+};
+
+export default logout
