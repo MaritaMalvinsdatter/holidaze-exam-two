@@ -17,6 +17,7 @@ const RegisterForm = () => {
       .matches(/@(noroff\.no|stud\.noroff\.no)$/, 'Email must end with @noroff.no or @stud.noroff.no'),
     password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
     avatar: yup.string().url('Invalid URL format'),
+    venueManager: yup.boolean().required(),
   });
 
   const formik = useFormik({
@@ -25,6 +26,7 @@ const RegisterForm = () => {
       email: '',
       password: '',
       avatar: '',
+      venueManager: false,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -49,16 +51,19 @@ const RegisterForm = () => {
   });
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
-      <div className="form-outline mb-4">
-        <Form.Label>Name:</Form.Label>
-        <Form.Control
-          type="text"
-          name="name"
-          placeholder="Write your name"
-          {...formik.getFieldProps('name')}
-        />
-        {formik.touched.name && formik.errors.name ? (
+    <div className="d-flex justify-content-center align-items-center vh-70">
+      <div className="w-50"> 
+      <h1 className="my-5 text-center">Register New User:</h1>
+        <Form onSubmit={formik.handleSubmit}>
+          <div className="form-outline mb-4">
+            <Form.Label>Name:</Form.Label>
+            <Form.Control
+            type="text"
+            name="name"
+            placeholder="Write your name"
+            {...formik.getFieldProps('name')}
+          />
+          {formik.touched.name && formik.errors.name ? (
           <Alert variant="danger">{formik.errors.name}</Alert>
         ) : null}
       </div>
@@ -98,8 +103,19 @@ const RegisterForm = () => {
           <Alert variant="danger">{formik.errors.avatar}</Alert>
         ) : null}
       </div>
+      <div className="form-check mb-4">
+        <Form.Check 
+         type="checkbox"
+          label="Register as Venue Manager"
+          name="venueManager"
+          {...formik.getFieldProps('venueManager')}
+        />
+      </div>
       <Button type="submit">Register</Button>
     </Form>
+      </div>
+    </div>
+    
   );
 };
 
