@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { API_BASE, API_PROFILE } from '../EndPoints';
 import { Container, Row, Col } from 'react-bootstrap';
 import logout from '../ApiHelper';
+import { Link } from 'react-router-dom'; 
 
 function ProfilePage() {
     const [user, setUser] = useState(null);
@@ -12,14 +13,8 @@ function ProfilePage() {
             try {
                 const token = localStorage.getItem("token");
                 const storedProfile = JSON.parse(localStorage.getItem("profile"));
-                const name = storedProfile ? storedProfile.name : null;
         
-                if (!name) {
-                    setError(new Error("User name is not found in localStorage."));
-                    return;
-                }
-        
-                const response = await fetch(API_BASE + API_PROFILE + name, {
+                const response = await fetch(API_BASE + API_PROFILE + storedProfile.name, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -111,7 +106,12 @@ function ProfilePage() {
                 </Col>
                 <Col xs={12}>
                     {user.venueManager ? 
-                        <p className="font-weight-bold">Venue Manager</p> :
+                        <>
+                            <p className="font-weight-bold">Venue Manager</p>
+                            <Link to="/create-venue">
+                                <button>Create New Venue</button>
+                            </Link>
+                        </> :
                         <button onClick={handleBecomeManager}>Become a Venue Manager</button>
                     }
                 </Col> 
