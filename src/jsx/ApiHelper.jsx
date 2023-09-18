@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import * as storage from "./Storage";
 
-export function useApiHelper() {
+export function ApiHelper() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
