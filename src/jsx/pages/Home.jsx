@@ -5,7 +5,7 @@ import VenueList from '../components/VenueList';
 function Home() {
   return (
     <div>
-      <h1>Home Page</h1>
+      <h1>Where to?</h1>
       <VenueList />
     </div>
   );
