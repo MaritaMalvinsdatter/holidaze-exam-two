@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { API_BASE, API_VENUE } from '../EndPoints';
 import { Row, Col, Container, Alert, Carousel } from "react-bootstrap";
 import styles from '../../styles/VenueDetails.module.css';
@@ -9,6 +9,7 @@ function VenueDetails() {
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
       async function fetchData() {
@@ -17,7 +18,6 @@ function VenueDetails() {
             API_BASE + API_VENUE + `/${id}?_bookings=true&_owner=true`
           );
           const json = await response.json();
-          console.log(json);
           setVenue(json);
           setIsLoading(false);
         } catch (error) {
@@ -35,13 +35,39 @@ function VenueDetails() {
     if (isError) {
         return <Alert variant="danger">Error loading data.</Alert>;
     }
-    if (!venueSpecs) {
-        return null;
-    }
-
     if (!venueSpecs || !venueSpecs.location) {
         return null; 
     }
+
+    const currentUser = JSON.parse(localStorage.getItem('profile'));
+
+    const isOwner = () => {
+        return venueSpecs.owner && currentUser && venueSpecs.owner.email === currentUser.email;
+    };
+
+    // Deletes venue owned by user
+    async function DeleteVenue(id) {
+        try {
+          const token = localStorage.getItem("token");
+          const url = API_BASE + API_VENUE + "/" + id;
+          const response = await fetch(url, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.ok) {
+            const responseBody = await response.text();
+            const deletedVenue = responseBody ? JSON.parse(responseBody) : null;
+            console.log("Deleted venue:", deletedVenue);
+            navigate('/profile');
+          } else {
+            console.error("Error deleting venue first error", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error deleting venue", error);
+        }
+      }
 
     return (
         <Container>
@@ -97,6 +123,19 @@ function VenueDetails() {
                     <strong>Price per night:</strong> <span>${venueSpecs.price}</span>
                 </Col>
             </Row>
+            <Row className="mt-3">
+                <Col>
+                    <strong>Manager:</strong> <span>{venueSpecs.owner.name}</span>
+                </Col>
+            </Row>
+            {isOwner() && (
+            <Row className="mt-3">
+                <Col>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger ml-2" onClick={() => DeleteVenue(venueSpecs.id)}>Delete</button>
+                </Col>
+            </Row>
+        )}
         </Container>
     );
 }
