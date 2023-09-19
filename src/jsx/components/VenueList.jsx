@@ -51,7 +51,7 @@ function Venues() {
           <Row>
               {Venues.map((Venue) => (
                   <Col xs={12} sm={6} md={4} lg={3} key={Venue.id}>
-                      <Card className="mb-4">
+                      <Card className={`mb-4 ${styles.positionRelative}`}>
                           {Venue.media.length > 0 && (
                               <Card.Img 
                                   variant="top" 
@@ -61,40 +61,39 @@ function Venues() {
                               />
                           )}
                           <Card.Body>
-                            <Card.Title>
-                                <Link to={`/venue/${Venue.id}`}>{Venue.name}</Link>
-                            </Card.Title>
-                            
-                            <Card.Text>
-                                <i className="mb-4">
-                                    {
-                                        (Venue.location.address === "Unknown" && Venue.location.city === "Unknown") 
-                                        ? "Location is unknown"
-                                        : `${Venue.location.city}, ${Venue.location.country}`
-                                    }
-                                </i>
-                            </Card.Text>
-                            
-                            <Card.Text>
-                                Maximum {Venue.maxGuests} guests
-                                {Venue.price}NOK / Night
-                                Hosted by {Venue.owner.name}
-                            </Card.Text>
-                            
-                            <Card.Text>
-                            <i className={`fas fa-mug-saucer ${Venue.meta.breakfast ? '' : 'text-light'}`}></i>
+                              <Card.Title className={styles.boldText}>
+                                  <Link to={`/venue/${Venue.id}`}>{Venue.name}</Link>
+                              </Card.Title>
+                              
+                              <Card.Text>
+                                  <i className="mb-4">
+                                      {
+                                          (Venue.location.address === "Unknown" && Venue.location.city === "Unknown") 
+                                          ? "Location is unknown"
+                                          : `${Venue.location.city}, ${Venue.location.country}`
+                                      }
+                                  </i>
+                              </Card.Text>
+                              
+                              <Card.Text className="mb-5">
+                                  Maximum {Venue.maxGuests} guests
+                                  {Venue.price}NOK / Night
+                                  Hosted by {Venue.owner.name}
+                              </Card.Text>
+                          </Card.Body>
 
-                                <i className={`fa-solid fa-square-parking ${Venue.meta.parking ? '' : 'text-light'}`}></i>
-                                <i className={`fa-solid fa-paw ${Venue.meta.pets ? '' : 'text-light'}`}></i>
-                                <i className={`fa-solid fa-wifi ${Venue.meta.wifi ? '' : 'text-light'}`}></i>
-                            </Card.Text>
-                        </Card.Body>
-
+                          <div className={styles.iconContainer}>
+                              <i className={`fa-solid fa-mug-saucer mx-1 ${Venue.meta.breakfast ? '' : styles.iconUnavailable}`}></i>
+                              <i className={`fa-solid fa-square-parking mx-1 ${Venue.meta.parking ? '' : styles.iconUnavailable}`}></i>
+                              <i className={`fa-solid fa-paw mx-1 ${Venue.meta.pets ? '' : styles.iconUnavailable}`}></i>
+                              <i className={`fa-solid fa-wifi mx-1 ${Venue.meta.wifi ? '' : styles.iconUnavailable}`}></i>
+                          </div>
                       </Card>
                   </Col>
               ))}
           </Row>
       </Container>
+
   );
 }
 
