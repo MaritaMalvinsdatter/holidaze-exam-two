@@ -1,8 +1,6 @@
-
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ApiHelper } from '../ApiHelper'; 
+import { useApiHelper } from '../ApiHelper'; // <-- Updated import
 import { API_BASE, API_LOGIN } from '../EndPoints';
 
 function LoginForm() {
@@ -11,7 +9,8 @@ function LoginForm() {
     password: '',
   });
 
-  const { saveUserAndToken } = ApiHelper(); 
+  // Use the hook here instead
+  const { saveUserAndToken } = useApiHelper(); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;

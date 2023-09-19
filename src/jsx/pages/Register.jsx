@@ -3,10 +3,10 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { API_BASE, API_REGISTER } from '../EndPoints';
-import { ApiHelper } from '../ApiHelper';
+import { useApiHelper } from '../ApiHelper';
 
 const RegisterForm = () => {
-  const { apiRequest, saveUserAndToken } = ApiHelper();
+  const { apiRequest, saveUserAndToken } = useApiHelper(); 
 
   const validationSchema = yup.object({
     name: yup.string().required('Name is required'),

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import * as storage from "./Storage";
 
-export function ApiHelper() {
+export function useApiHelper() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
@@ -18,28 +18,7 @@ export function ApiHelper() {
     if (storedToken) {
        setToken(storedToken);
     }
- }, [setUser, setToken]); 
-
-  const apiRequest = async (url, options = {}) => {
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    const response = await fetch(url, {
-      ...options,
-      headers,
-    });
-
-    if (response.ok) {
-      return await response.json();
-    } else {
-      throw new Error('API request failed');
-    }
-  };
+ }, [setUser, setToken]);
 
   const saveUserAndToken = (userData, authToken) => {
     storage.save('profile', userData);
@@ -55,8 +34,35 @@ export function ApiHelper() {
     setToken(null); 
   };
 
-  return { user, token, apiRequest, saveUserAndToken, clearUserAndToken };
+  return { user, token, saveUserAndToken, clearUserAndToken };
 }
+
+export async function apiRequest(url, options = {}, token = null) {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  });
+
+  if (response.ok) {
+    const text = await response.text();
+      if (!text) {
+        return null;  // or {} or whatever you prefer
+      }
+        return JSON.parse(text);
+    } else {
+      throw new Error('API request failed');
+  }
+
+}
+
 
 const logout = () => {
   // Clear user and token from local storage
