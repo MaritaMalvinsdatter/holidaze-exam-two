@@ -94,15 +94,6 @@ function ProfilePage() {
         marginBottom: '15px'
     };
     
-    // Calculating price for bookings:
-    // const getTotalPrice = (startDate, endDate, nightlyPrice) => {
-    //     const start = new Date(startDate);
-    //     const end = new Date(endDate);
-    //     const differenceInTime = end.getTime() - start.getTime();
-    //     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-    //     return differenceInDays * nightlyPrice;
-    // };
-    
     return (
         <Container>
             <Row className="justify-content-center text-center">
@@ -187,11 +178,8 @@ function ProfilePage() {
                         <p>You manage no venues.</p>
                     )}
                 </Col>
-
-            </Row>
-            
-        </Container>
-        
+            </Row> 
+        </Container>  
     );
 }
 
