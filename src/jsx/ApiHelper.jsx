@@ -63,14 +63,26 @@ export async function apiRequest(url, options = {}, token = null) {
 
 }
 
-
-const logout = () => {
+export const logout = () => {
   // Clear user and token from local storage
   localStorage.removeItem("token");
   localStorage.removeItem("profile");
-
-  // Redirect user to homepage or login page
-  window.location.href = "/"; // redirect to homepage
+  window.location.href = "/"; 
 };
 
-export default logout
+ 
+
+export const getTotalPrice = (startDate, endDate, nightlyPrice) => {
+  if (!startDate || !endDate || !nightlyPrice) return 0;
+
+    const start = new Date(startDate);
+    start.setHours(0,0,0,0); // reset time to midnight
+    const end = new Date(endDate);
+    end.setHours(0,0,0,0); // reset time to midnight
+
+    const differenceInDays = (end - start) / (1000 * 3600 * 24);
+
+    return Math.round(differenceInDays) * nightlyPrice;
+};
+
+

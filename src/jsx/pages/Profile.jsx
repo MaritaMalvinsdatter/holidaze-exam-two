@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE, API_PROFILE } from '../EndPoints';
 import { Container, Row, Col, Card, Button  } from 'react-bootstrap';
-import logout from '../ApiHelper';
+import { logout, getTotalPrice } from '../ApiHelper';
 import { Link, useNavigate } from 'react-router-dom'; 
 
 function ProfilePage() {
@@ -36,9 +36,9 @@ function ProfilePage() {
                 const userData = await response.json();
                 console.log(userData);
                 setUser(userData);
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-                setError(error); 
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                    setError(error); 
             }
         };
     
@@ -95,13 +95,13 @@ function ProfilePage() {
     };
     
     // Calculating price for bookings:
-    const getTotalPrice = (startDate, endDate, nightlyPrice) => {
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        const differenceInTime = end.getTime() - start.getTime();
-        const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-        return differenceInDays * nightlyPrice;
-    };
+    // const getTotalPrice = (startDate, endDate, nightlyPrice) => {
+    //     const start = new Date(startDate);
+    //     const end = new Date(endDate);
+    //     const differenceInTime = end.getTime() - start.getTime();
+    //     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    //     return differenceInDays * nightlyPrice;
+    // };
     
     return (
         <Container>

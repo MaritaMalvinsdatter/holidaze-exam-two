@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { API_BASE, API_VENUE } from '../EndPoints';
 import { Row, Col, Container, Alert, Carousel } from "react-bootstrap";
 import styles from '../../styles/VenueDetails.module.css';
+// import styles from '../../styles/Calendar.module.css';
+import BookingCalendar from "../components/Calendar";
 
 function VenueDetails() {
     const [venueSpecs, setVenue] = useState(null);
@@ -19,6 +21,7 @@ function VenueDetails() {
           );
           const json = await response.json();
           setVenue(json);
+          console.log(json)
           setIsLoading(false);
         } catch (error) {
           setIsError(true);
@@ -89,6 +92,18 @@ function VenueDetails() {
                     ))}
                 </Carousel>
             </div>
+
+            <Row className="mt-3">
+                <Col>
+                <BookingCalendar 
+                    maxGuests={venueSpecs.maxGuests} 
+                    bookings={venueSpecs.bookings}
+                    venueId={id}
+                    price={venueSpecs.price}  // passing the price here
+                />
+                </Col>
+            </Row>
+
             <Row className="mt-3">
                 <Col md={6}>
                     <strong>Created:</strong> {new Date(venueSpecs.created).toLocaleString()}
@@ -111,16 +126,6 @@ function VenueDetails() {
                 <Col>
                     <strong>Description:</strong>
                     <p>{venueSpecs.description}</p>
-                </Col>
-            </Row>
-            <Row className="mt-3">
-                <Col>
-                    <strong>Maximum number of guests:</strong> {venueSpecs.maxGuests}
-                </Col>
-            </Row>
-            <Row className="mt-3">
-                <Col>
-                    <strong>Price per night:</strong> <span>${venueSpecs.price}</span>
                 </Col>
             </Row>
             <Row className="mt-3">
