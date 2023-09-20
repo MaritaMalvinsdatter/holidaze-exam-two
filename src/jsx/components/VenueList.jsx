@@ -69,7 +69,7 @@ function Venues() {
                                   <i className="mb-4">
                                       {
                                           (Venue.location.address === "Unknown" && Venue.location.city === "Unknown") 
-                                          ? "Location is unknown"
+                                          ? "Unknown Location"
                                           : `${Venue.location.city}, ${Venue.location.country}`
                                       }
                                   </i>
@@ -77,7 +77,9 @@ function Venues() {
                               
                               <Card.Text className="mb-5">
                                   Maximum {Venue.maxGuests} guests
+                                  <br />
                                   {Venue.price}NOK / Night
+                                  <br />
                                   Hosted by {Venue.owner.name}
                               </Card.Text>
                           </Card.Body>
