@@ -11,7 +11,7 @@ const venueSchema = yup.object().shape({
     price: yup.number().required('Price is required').min(0, "Price should be a positive value"),
     maxGuests: yup.number().required('Max guests is required').min(1, "Should have at least 1 guest").max(100, "Maximum of 100 guests allowed"),
     media: yup.array().of(yup.string().url('Invalid URL').notRequired()).required(),
-    rating: yup.number().min(1, "Minimum rating is 1").max(5, "Maximum rating is 5").nullable(),
+    rating: yup.number().min(0, "Minimum rating is 0").max(5, "Maximum rating is 5").nullable().notRequired(),
     location: yup.object({
         address: yup.string(),
         city: yup.string(),
@@ -37,33 +37,40 @@ function CreateVenue() {
         const url = `${API_BASE}${API_VENUE}`;
         const token = localStorage.getItem("token");
         
-        const newData = {
-            name: values.name,
-            description: values.description,
-            media: values.media.filter(mediaUrl => mediaUrl.trim() !== ''), 
-            price: values.price,
-            maxGuests: values.maxGuests,
-            meta: {
-                wifi: values.meta.wifi,
-                parking: values.meta.parking,
-                breakfast: values.meta.breakfast,
-                pets: values.meta.pets
-            }
-        };
-        
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify(newData),
-        };
-
         try {
-            const response = await fetch(url, options);
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    name: values.name,
+                    description: values.description,
+                    media: values.media.filter(mediaUrl => mediaUrl.trim() !== ''), 
+                    price: values.price,
+                    maxGuests: values.maxGuests,
+                    rating: values.rating !== undefined ? values.rating : 0,
+                    location: {
+                        address: values.location.address,
+                        city: values.location.city,
+                        zip: values.location.zip,
+                        country: values.location.country,
+                        continent: values.location.continent,
+                        lat: values.location.lat,
+                        lng: values.location.lng
+                    },
+                    meta: {
+                        wifi: values.meta.wifi,
+                        parking: values.meta.parking,
+                        breakfast: values.meta.breakfast,
+                        pets: values.meta.pets
+                    }
+                }),
+            });
+    
             const json = await response.json();
-
+    
             if (json.id) {
                 formik.resetForm();
                 navigate(`/venue/${json.id}`);
@@ -72,7 +79,7 @@ function CreateVenue() {
             } else {
                 alert("An error occurred, try again.");
             }
-
+    
         } catch (error) {
             console.error(error);
         }
@@ -105,6 +112,11 @@ function CreateVenue() {
         validationSchema: venueSchema,
         onSubmit: onSubmitHandler
     });
+
+    const handleRatingChange = (event) => {
+        const value = event.target.value;
+        formik.setFieldValue("rating", value ? parseInt(value, 10) : "");
+    };
     
     return (
         <Container>
@@ -197,14 +209,11 @@ function CreateVenue() {
 
                 <Form.Group as={Row} controlId="rating">
                     <Col sm={12}>
-                        <Form.Label>Rating:</Form.Label>
-                    </Col>
-                    <Col sm={12}>
                         <Form.Control 
                             as="select" 
                             name="rating" 
                             value={formik.values.rating || ''} 
-                            onChange={formik.handleChange}
+                            onChange={handleRatingChange}
                             isInvalid={formik.touched.rating && formik.errors.rating}
                         >
                             <option value="">Select Rating</option>
