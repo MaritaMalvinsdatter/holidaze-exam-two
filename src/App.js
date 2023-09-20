@@ -8,7 +8,6 @@ import ProfilePage from '../src/jsx/pages/Profile.jsx';
 import VenueDetails from '../src/jsx/pages/VenueDetails.jsx';
 import CreateVenue from '../src/jsx/pages/CreateVenue.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
 
 function App() {
   return (
