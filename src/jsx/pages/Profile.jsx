@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE, API_PROFILE } from '../EndPoints';
-import { Container, Row, Col, Card, Button  } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Form  } from 'react-bootstrap';
 import { logout, getTotalPrice } from '../ApiHelper';
 import { Link, useNavigate } from 'react-router-dom'; 
+import styles from '../../styles/Profile.module.css';
 
 function ProfilePage() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
+    const [editMode, setEditMode] = useState(false);
+    const [newAvatarURL, setNewAvatarURL] = useState('');
     const navigate = useNavigate();
     const navigateToVenueDetails = (venueId) => {
         navigate(`/venue/${venueId}`);
@@ -45,7 +48,7 @@ function ProfilePage() {
         fetchUser();
     }, []);
     
-
+    // User can become manager after registering
     const handleBecomeManager = async () => {
        
         try {
@@ -86,24 +89,71 @@ function ProfilePage() {
         return <div>Loading profile...</div>;
     }
 
-    const avatarStyle = {
-        width: '100px',
-        height: '100px',
-        borderRadius: '50%',
-        objectFit: 'cover',
-        marginBottom: '15px'
+    // edit avatar
+    const handleAvatarEdit = () => {
+        setEditMode(true);
+    };
+
+    const handleAvatarUpdate = async () => {
+        if (!newAvatarURL) {
+            alert('Please provide a valid image URL!');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`${API_BASE}${API_PROFILE}${user.name}/media`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ avatar: newAvatarURL }),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to update avatar.");
+            }
+            const updatedProfile = await response.json();
+            setUser(prevUser => ({ ...prevUser, avatar: updatedProfile.avatar }));
+            setEditMode(false);
+        } catch (error) {
+            console.error(error);
+            alert("Failed to update avatar.");
+        }
     };
     
     return (
         <Container>
             <Row className="justify-content-center text-center">
                 <Col xs={12}>
-                    <img 
-                        id="profile-avatar" 
-                        src={user.avatar || '/src/img/blank-profile-picture-gca82a1260_640.png'} 
-                        alt="Avatar" 
-                        style={avatarStyle}
-                    />
+                    <div className={styles['avatar-container']}>
+                        <img 
+                            id="profile-avatar" 
+                            src={user.avatar || '/src/img/blank-profile-picture-gca82a1260_640.png'} 
+                            alt="Avatar" 
+                            className={styles.avatarStyle}
+                        />
+                        <div
+                            className={styles['avatar-overlay']}
+                            onMouseEnter={e => e.currentTarget.style.opacity = 1}
+                            onMouseLeave={e => e.currentTarget.style.opacity = 0}
+                        >
+                            <Button variant="primary" onClick={handleAvatarEdit}>Edit</Button>
+                        </div>
+                    </div>
+                    {editMode && (
+                            <div style={{ marginTop: '10px' }}>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter new avatar URL"
+                                    value={newAvatarURL}
+                                    onChange={e => setNewAvatarURL(e.target.value)}
+                                />
+                                <Button variant="success" onClick={handleAvatarUpdate} style={{ marginTop: '5px' }}>
+                                    Update Avatar
+                                </Button>
+                            </div>
+                        )}
                 </Col>
                 <Col xs={12}>
                     <h1 id="profile-name">{user.name}</h1>
