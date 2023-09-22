@@ -30,50 +30,33 @@ const venueSchema = yup.object().shape({
     })
 });
 
-function CreateVenue() {
+function VenueForm({ initialData = {}, mode = 'create', onSubmit }) {
     const navigate = useNavigate();
 
     const onSubmitHandler = async (values) => {
-        const url = `${API_BASE}${API_VENUE}`;
+        const url = mode === 'edit' ? `${API_BASE}${API_VENUE}/${initialData.id}` : `${API_BASE}${API_VENUE}`;
+        const method = mode === 'edit' ? 'PUT' : 'POST';
         const token = localStorage.getItem("token");
         
         try {
             const response = await fetch(url, {
-                method: "POST",
+                method: method, 
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify({
-                    name: values.name,
-                    description: values.description,
-                    media: values.media.filter(mediaUrl => mediaUrl.trim() !== ''), 
-                    price: values.price,
-                    maxGuests: values.maxGuests,
-                    rating: values.rating !== undefined ? values.rating : 0,
-                    location: {
-                        address: values.location.address,
-                        city: values.location.city,
-                        zip: values.location.zip,
-                        country: values.location.country,
-                        continent: values.location.continent,
-                        lat: values.location.lat,
-                        lng: values.location.lng
-                    },
-                    meta: {
-                        wifi: values.meta.wifi,
-                        parking: values.meta.parking,
-                        breakfast: values.meta.breakfast,
-                        pets: values.meta.pets
-                    }
-                }),
+                body: JSON.stringify(values)
             });
     
             const json = await response.json();
+            console.log(json)
     
             if (json.id) {
                 formik.resetForm();
                 navigate(`/venue/${json.id}`);
+                if (onSubmit && typeof onSubmit === 'function') {
+                    onSubmit();
+                }
             } else if (json.errors && json.errors.length > 0) {
                 alert(json.errors[0].message);
             } else {
@@ -87,27 +70,10 @@ function CreateVenue() {
 
     const formik = useFormik({
         initialValues: {
-            name: "",
-            description: "",
-            price: 0,
-            maxGuests: 0,
-            rating: 0,
-            media: [""],
-            meta: {
-                wifi: false,
-                parking: false,
-                breakfast: false,
-                pets: false
-            },
-            location: {
-                address: "",
-                city: "",
-                zip: "",
-                country: "",
-                continent: "",
-                lat: 0,
-                lng: 0
-            }
+            ...initialData,
+            media: initialData.media || [""],
+            location: initialData.location || {},
+            meta: initialData.meta || {}
         },
         validationSchema: venueSchema,
         onSubmit: onSubmitHandler
@@ -120,6 +86,7 @@ function CreateVenue() {
     
     return (
         <Container>
+            <h1 className='text-center mb-5'> {mode === 'edit' ? 'Edit Venue' : 'Create New Venue'} </h1>
             <Form onSubmit={formik.handleSubmit}>
                 
                 <Form.Group controlId="venueName">
@@ -149,16 +116,28 @@ function CreateVenue() {
 
                 <Form.Group>
                     <Form.Label>Media URLs</Form.Label>
-                    {formik.values.media.map((url, index) => (
-                        <Form.Control 
-                            key={index}
-                            type="text"
-                            name={`media[${index}]`}
-                            value={url} 
-                            onChange={formik.handleChange}
-                            isInvalid={formik.touched.media && formik.touched.media[index] && formik.errors.media && formik.errors.media[index]}
-                        />
-                    ))}
+                        {formik.values.media.map((url, index) => (
+                                <div key={index}>
+                                    <Form.Control 
+                                        type="text"
+                                        name={`media[${index}]`}
+                                        value={url} 
+                                        onChange={formik.handleChange}
+                                        isInvalid={formik.touched.media && formik.touched.media[index] && formik.errors.media && formik.errors.media[index]}
+                                    />
+                                    {formik.values.media.length > 1 && (
+                                        <Button 
+                                            onClick={() => {
+                                                const updatedMedia = [...formik.values.media];
+                                                updatedMedia.splice(index, 1);
+                                                formik.setFieldValue("media", updatedMedia);
+                                            }}
+                                        >
+                                            Remove URL
+                                    </Button>
+                                )}
+                            </div>
+                        ))}
                 </Form.Group>
                                 
                 {formik.values.media.length < 5 && (
@@ -170,7 +149,6 @@ function CreateVenue() {
                         Add Media URL
                     </Button>
                 )}
-
 
                 <Form.Group as={Row} controlId="price">
                     <Col sm={12}>
@@ -317,11 +295,13 @@ function CreateVenue() {
                     </Col>
                 </Form.Group>
 
-                <Button variant="primary" type="submit" onClick={formik.handleSubmit}>Create</Button>
+                <Button variant="primary" type="submit">
+                    {mode === 'edit' ? 'Save Changes' : 'Create'}
+                </Button>
 
             </Form>
         </Container>
     );
 }
 
-export default CreateVenue;
+export default VenueForm;
