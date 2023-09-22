@@ -1,0 +1,38 @@
+
+.searchContainer {
+    background-image: url('../images/hawaii-1037024_1920.jpg');
+    background-size: cover;
+    padding: 0 50px;
+    background-position: center center;
+    width: 100%;
+    height: 250px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+.searchInput {
+  width: 50%;  
+  opacity: 50%;
+  opacity: 90%;
+}
+
+/* Media query */
+@media (max-width: 768px) {
+  .searchContainer {
+      padding: 0 20px; 
+      height: 100px;
+  }
+
+  .searchInput {
+      width: 80%;  
+  }
+}
+
+
+
+
+
+
