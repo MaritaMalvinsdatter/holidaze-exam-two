@@ -49,7 +49,7 @@ function VenueForm({ initialData = {}, mode = 'create', onSubmit }) {
             });
     
             const json = await response.json();
-            console.log(json)
+            // console.log(json)
     
             if (json.id) {
                 formik.resetForm();

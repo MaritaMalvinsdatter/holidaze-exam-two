@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_BASE, API_VENUE } from '../EndPoints';
@@ -8,12 +7,11 @@ import BookingCalendar from "../components/Calendar";
 import VenueForm from "./VenueForm";
 
 async function fetchData(id, setVenue, setIsLoading, setIsError) {
-    console.log('fetchData called with id:', id);
     try {
         const response = await fetch(`${API_BASE}${API_VENUE}/${id}?_bookings=true&_owner=true`);
         const json = await response.json();
         setVenue(json);
-        console.log(json);
+        // console.log(json);
     } catch (error) {
         setIsError(true);
     } finally {
@@ -76,9 +74,7 @@ function VenueDetails() {
     if (!venueSpecs || !venueSpecs.location) return null;
 
     const handleEditSubmit = () => {
-        console.log('Before:', isEditing);  // Debugging line
         setIsEditing(false);
-        console.log('After:', isEditing);  // Debugging line
         fetchData(id, setVenue, setIsLoading, setIsError);
     };
 
