@@ -1,76 +1,93 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_BASE, API_VENUE } from '../EndPoints';
-import { Row, Col, Container, Alert, Carousel } from "react-bootstrap";
+import { Row, Col, Container, Alert, Carousel, Modal, Button } from "react-bootstrap";
 import styles from '../../styles/VenueDetails.module.css';
-// import styles from '../../styles/Calendar.module.css';
 import BookingCalendar from "../components/Calendar";
+import VenueForm from "./VenueForm";
+
+async function fetchData(id, setVenue, setIsLoading, setIsError) {
+    console.log('fetchData called with id:', id);
+    try {
+        const response = await fetch(`${API_BASE}${API_VENUE}/${id}?_bookings=true&_owner=true`);
+        const json = await response.json();
+        setVenue(json);
+        console.log(json);
+    } catch (error) {
+        setIsError(true);
+    } finally {
+        setIsLoading(false);
+    }
+}
+
+async function deleteVenue(venueId, navigate) {
+    const shouldDelete = window.confirm("Are you sure you want to delete this venue?");
+    
+    if (!shouldDelete) {
+      return;
+    }
+  
+    const url = `${API_BASE}${API_VENUE}/${venueId}`;
+    const token = localStorage.getItem("token");
+    
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();  // attempt to parse error response
+        console.error(`Error: ${response.status} - ${errorData.message || 'Unknown error'}`);
+        return;
+      }
+  
+      const text = await response.text();
+      if (text) {
+        const data = JSON.parse(text);
+        console.log('Deletion response:', data);
+      }
+  
+      navigate('/profile');  
+    } catch (error) {
+      console.error('Error deleting venue:', error);
+    }
+  }
 
 function VenueDetails() {
     const [venueSpecs, setVenue] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-      async function fetchData() {
-        try {
-          const response = await fetch(
-            API_BASE + API_VENUE + `/${id}?_bookings=true&_owner=true`
-          );
-          const json = await response.json();
-          setVenue(json);
-          console.log(json)
-          setIsLoading(false);
-        } catch (error) {
-          setIsError(true);
-          setIsLoading(false);
-        }
-      }
-
-      fetchData();
+        fetchData(id, setVenue, setIsLoading, setIsError);
     }, [id]);
 
-    if (isLoading) {
-        return <Alert variant="info">Loading...</Alert>;
-    }
-    if (isError) {
-        return <Alert variant="danger">Error loading data.</Alert>;
-    }
-    if (!venueSpecs || !venueSpecs.location) {
-        return null; 
-    }
+    if (isLoading) return <Alert variant="info">Loading...</Alert>;
+    if (isError) return <Alert variant="danger">Error loading data.</Alert>;
+    if (!venueSpecs || !venueSpecs.location) return null;
 
-    const currentUser = JSON.parse(localStorage.getItem('profile'));
-
-    const isOwner = () => {
-        return venueSpecs.owner && currentUser && venueSpecs.owner.email === currentUser.email;
+    const handleEditSubmit = () => {
+        console.log('Before:', isEditing);  // Debugging line
+        setIsEditing(false);
+        console.log('After:', isEditing);  // Debugging line
+        fetchData(id, setVenue, setIsLoading, setIsError);
     };
 
-    // Deletes venue owned by user
-    async function DeleteVenue(id) {
-        try {
-          const token = localStorage.getItem("token");
-          const url = API_BASE + API_VENUE + "/" + id;
-          const response = await fetch(url, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          if (response.ok) {
-            const responseBody = await response.text();
-            const deletedVenue = responseBody ? JSON.parse(responseBody) : null;
-            console.log("Deleted venue:", deletedVenue);
-            navigate('/profile');
-          } else {
-            console.error("Error deleting venue first error", response.statusText);
-          }
-        } catch (error) {
-          console.error("Error deleting venue", error);
-        }
-      }
+    const closeModal = () => {
+        setIsEditing(false);
+    };
+
+    const currentUser = JSON.parse(localStorage.getItem('profile'));
+    const isOwner = venueSpecs.owner && currentUser && venueSpecs.owner.email === currentUser.email;
 
     return (
         <Container>
@@ -133,14 +150,28 @@ function VenueDetails() {
                     <strong>Manager:</strong> <span>{venueSpecs.owner.name}</span>
                 </Col>
             </Row>
-            {isOwner() && (
-            <Row className="mt-3">
-                <Col>
-                    <button className="btn btn-primary">Edit</button>
-                    <button className="btn btn-danger ml-2" onClick={() => DeleteVenue(venueSpecs.id)}>Delete</button>
-                </Col>
-            </Row>
-        )}
+            {isOwner && (
+                <Row className="mt-3">
+                    <Col>
+                        <button className="btn btn-primary" onClick={() => setIsEditing(true)}>Edit</button>
+                        <button className="btn btn-danger ml-2" onClick={() => deleteVenue(venueSpecs.id, navigate)}>Delete</button>
+                    </Col>
+                </Row>
+            )}
+            <Modal show={isEditing} onHide={closeModal}>
+                <Modal.Header closeButton>
+                </Modal.Header>
+                <Modal.Body>
+                    <VenueForm
+                        initialData={venueSpecs}
+                        mode='edit'
+                        onSubmit={handleEditSubmit}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={closeModal}>Close</Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 }
