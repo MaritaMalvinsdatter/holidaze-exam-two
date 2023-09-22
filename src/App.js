@@ -6,7 +6,7 @@ import LoginForm from '../src/jsx/pages/Login.jsx';
 import RegisterForm from '../src/jsx/pages/Register.jsx';
 import ProfilePage from '../src/jsx/pages/Profile.jsx';
 import VenueDetails from '../src/jsx/pages/VenueDetails.jsx';
-import CreateVenue from '../src/jsx/pages/CreateVenue.jsx';
+import VenueForm from './jsx/pages/VenueForm.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
           <Route path="login" element={<LoginForm />} /> 
           <Route path="profile" element={<ProfilePage />} />
           <Route path="register" element={<RegisterForm />} />
-          <Route path="create-venue" element={<CreateVenue />} />
+          <Route path="create-venue" element={<VenueForm />} />
           <Route path="venue/:id" element={<VenueDetails />} />
         </Route>
       </Routes>
