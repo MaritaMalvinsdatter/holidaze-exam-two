@@ -188,7 +188,7 @@ function ProfilePage() {
                         const totalPrice = getTotalPrice(booking.dateFrom, booking.dateTo, booking.venue.price);
                         return (
                             <Card key={booking.id} className="mb-3">
-                                <Card.Img variant="top" src={booking.venue.media[0] || '/path-to-default-image.jpg'} />
+                                <Card.Img variant="top" src={booking.venue.media[0] || '/src/images/blank-profile-picture-gca82a1260_640.png'} />
                                 <Card.Body>
                                     <Card.Title>{booking.venue.name}</Card.Title>
                                     <Card.Text>
