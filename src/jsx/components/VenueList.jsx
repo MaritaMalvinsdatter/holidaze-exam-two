@@ -5,9 +5,7 @@ import { Link } from 'react-router-dom';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../styles/VenueList.module.css';
-
-
-const url = 'https://api.noroff.dev/api/v1/holidaze/venues?limit=100_bookings=true&_owner=true';
+import { API_BASE, API_VENUE } from '../EndPoints';
 
 function Venues() {
   const [Venues, setVenues] = useState([]);
@@ -15,11 +13,11 @@ function Venues() {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    async function getData() {
+    async function getData( searchTerm ) {
       try {
         setIsError(false);
         setIsLoading(true);
-        const response = await fetch(url);
+        const response = await fetch(`${API_BASE}${API_VENUE}?limit=100&_bookings=true&_owner=true`);
         const json = await response.json();
         const sortedVenues = json.sort((a, b) => new Date(b.created) - new Date(a.created));// sorted by date created
         const venuesWithMedia = sortedVenues.filter(venue => venue.media && venue.media.length > 0); // only diplay venues with images
