@@ -7,13 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../styles/VenueList.module.css';
 import { API_BASE, API_VENUE } from '../EndPoints';
 
-function Venues() {
+function Venues( {searchTerm }) {
   const [Venues, setVenues] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    async function getData( searchTerm ) {
+    async function getData() {
       try {
         setIsError(false);
         setIsLoading(true);
@@ -22,9 +22,11 @@ function Venues() {
         const sortedVenues = json.sort((a, b) => new Date(b.created) - new Date(a.created));// sorted by date created
         const venuesWithMedia = sortedVenues.filter(venue => venue.media && venue.media.length > 0); // only diplay venues with images
         const limitedVenues = venuesWithMedia.slice(0, 100);
+        const filteredVenues = limitedVenues.filter(venue => 
+        venue.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+        setVenues(filteredVenues);
         console.log(limitedVenues);
-        setVenues(limitedVenues);
-        // console.log(limitedVenues);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -33,7 +35,7 @@ function Venues() {
     }
 
     getData();
-  }, []);
+  }, [searchTerm]);
 
     if (isLoading) {
       return <div>Loading Venues</div>;
@@ -45,6 +47,7 @@ function Venues() {
 
     return (
       <Container>
+        <h1 className='my-5'>Where to?</h1>
           <Row>
               {Venues.map((Venue) => (
                   <Col xs={12} sm={6} md={4} lg={3} key={Venue.id}>

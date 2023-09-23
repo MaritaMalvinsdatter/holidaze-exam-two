@@ -8,7 +8,6 @@ function Home() {
     <div>
       <Search onSearch={setSearchTerm} />
       <div>
-        <h1>Where to?</h1>
         <VenueList searchTerm={searchTerm} />
       </div>
     </div>
