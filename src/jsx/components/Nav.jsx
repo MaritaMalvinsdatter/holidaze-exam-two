@@ -9,7 +9,7 @@ function Nav() {
       <Container>
         <Navbar.Brand>
           <Link to="/" className={styles.logoLink}>
-            HOLIDAZE
+          H<i className="fa-regular fa-sun"></i>LIDAZE
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
