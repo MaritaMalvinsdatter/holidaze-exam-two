@@ -11,7 +11,7 @@ async function fetchVenue(id, setVenue, setIsLoading, setIsError) {
         const response = await fetch(`${API_BASE}${API_VENUE}/${id}?_bookings=true&_owner=true`);
         const json = await response.json();
         setVenue(json);
-        // console.log(json);
+        console.log(json);
     } catch (error) {
         setIsError(true);
     } finally {
@@ -168,6 +168,23 @@ function VenueDetails() {
                     <Button variant="secondary" onClick={closeModal}>Close</Button>
                 </Modal.Footer>
             </Modal>
+            <hr />
+            {isOwner && (
+                <Row className="mt-3">
+                    <Col>
+                        <h3>Bookings:</h3>
+                        <ul>
+                            {venueSpecs.bookings.map((booking, index) => (
+                                <li key={index}>
+                                    From: {new Date(booking.dateFrom).toLocaleDateString()} - 
+                                    To: {new Date(booking.dateTo).toLocaleDateString()} | 
+                                    Guests: {booking.guests}
+                                </li>
+                            ))}
+                        </ul>
+                    </Col>
+                </Row>
+            )}
         </Container>
     );
 }
