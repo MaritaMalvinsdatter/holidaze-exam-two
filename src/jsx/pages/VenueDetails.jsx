@@ -172,7 +172,7 @@ function VenueDetails() {
             {isOwner && (
                 <Row className="mt-3">
                     <Col>
-                        <h3>Bookings:</h3>
+                        <h5>Upcoming Bookings:</h5>
                         <ul>
                             {venueSpecs.bookings.map((booking, index) => (
                                 <li key={index}>
