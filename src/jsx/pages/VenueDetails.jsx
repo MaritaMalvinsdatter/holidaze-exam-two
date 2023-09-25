@@ -6,7 +6,7 @@ import styles from '../../styles/VenueDetails.module.css';
 import BookingCalendar from "../components/Calendar";
 import VenueForm from "./VenueForm";
 
-async function fetchData(id, setVenue, setIsLoading, setIsError) {
+async function fetchVenue(id, setVenue, setIsLoading, setIsError) {
     try {
         const response = await fetch(`${API_BASE}${API_VENUE}/${id}?_bookings=true&_owner=true`);
         const json = await response.json();
@@ -39,7 +39,7 @@ async function deleteVenue(venueId, navigate) {
       });
   
       if (!response.ok) {
-        const errorData = await response.json();  // attempt to parse error response
+        const errorData = await response.json();  
         console.error(`Error: ${response.status} - ${errorData.message || 'Unknown error'}`);
         return;
       }
@@ -66,7 +66,7 @@ function VenueDetails() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchData(id, setVenue, setIsLoading, setIsError);
+        fetchVenue(id, setVenue, setIsLoading, setIsError);
     }, [id]);
 
     if (isLoading) return <Alert variant="info">Loading...</Alert>;
@@ -75,7 +75,7 @@ function VenueDetails() {
 
     const handleEditSubmit = () => {
         setIsEditing(false);
-        fetchData(id, setVenue, setIsLoading, setIsError);
+        fetchVenue(id, setVenue, setIsLoading, setIsError);
     };
 
     const closeModal = () => {
@@ -112,7 +112,7 @@ function VenueDetails() {
                     maxGuests={venueSpecs.maxGuests} 
                     bookings={venueSpecs.bookings}
                     venueId={id}
-                    price={venueSpecs.price}  // passing the price here
+                    price={venueSpecs.price}
                 />
                 </Col>
             </Row>
