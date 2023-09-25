@@ -17,9 +17,6 @@ const venueSchema = yup.object().shape({
         city: yup.string(),
         zip: yup.string(),
         country: yup.string(),
-        continent: yup.string(),
-        lat: yup.number().min(-90, "Invalid latitude").max(90, "Invalid latitude"),
-        lng: yup.number().min(-180, "Invalid longitude").max(180, "Invalid longitude")
     }),
     
     meta: yup.object({
@@ -70,14 +67,30 @@ function VenueForm({ initialData = {}, mode = 'create', onSubmit }) {
 
     const formik = useFormik({
         initialValues: {
-            ...initialData,
-            media: initialData.media || [""],
-            location: initialData.location || {},
-            meta: initialData.meta || {}
+            name: initialData.name || '',
+            description: initialData.description || '',
+            price: initialData.price || '',
+            maxGuests: initialData.maxGuests || '',
+            media: initialData.media || [''],
+            rating: initialData.rating || '',
+            location: {
+                address: initialData.location?.address || '',
+                city: initialData.location?.city || '',
+                zip: initialData.location?.zip || '',
+                country: initialData.location?.country || '',
+            },
+            meta: {
+                wifi: initialData.meta?.wifi || false,
+                parking: initialData.meta?.parking || false,
+                breakfast: initialData.meta?.breakfast || false,
+                pets: initialData.meta?.pets || false
+            },
+            ...initialData  // keep this line to include any additional fields from initialData
         },
         validationSchema: venueSchema,
         onSubmit: onSubmitHandler
     });
+    
 
     const handleRatingChange = (event) => {
         const value = event.target.value;
