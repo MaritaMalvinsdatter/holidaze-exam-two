@@ -3,14 +3,13 @@
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 50%;
+    width: 100%;
+    max-width: 600px;
 }
 
-/* .infoTopLeft {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-} */
+.react-datepicker-wrapper {
+    width: 100%;
+}
 
 .datePickers {
     display: flex;
@@ -22,13 +21,38 @@
     border: 1px solid grey;
 }
 
-.bookButton {
-    margin-top: 10px;
+.inputField {
+    width: 100%;
+    padding: 0.25rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
-.display-flex {
+.bookEditButton {
+    background-color: #113A8C;
+    border: none;
+    color: white;
+}
+
+/* .display-flex {
     display: flex;
-    justify-content: center; /* horizontally center */
-    align-items: center;     /* vertically center */
-    flex-direction: column;  /* stack children vertically */
+    justify-content: center; 
+    align-items: center;    
+    flex-direction: column;  
+} */
+
+@media (min-width: 576px) {
+    .mt-2 {
+        margin-top: 1rem;
+    }
+
+    .react-datepicker-wrapper {
+        width: auto;
+    }
+}
+
+@media (min-width: 768px) {
+    .mt-2 {
+        margin-top: 1.5rem;
+    }
 }
