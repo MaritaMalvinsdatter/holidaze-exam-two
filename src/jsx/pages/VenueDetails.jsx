@@ -82,38 +82,72 @@ function VenueDetails() {
         setIsEditing(false);
     };
 
+    const renderStars = () => {
+        let stars = [];
+        for (let i = 1; i <= 5; i++) {
+            stars.push(
+                i <= venueSpecs.rating ?
+                    <i key={i} className="fa-solid fa-star"></i> :
+                    <i key={i} className="fa-regular fa-star"></i>
+            );
+        }
+        return stars;
+    };
+
+    function isUserLoggedIn() {
+        return localStorage.getItem('profile') !== null;
+    }
+
     const currentUser = JSON.parse(localStorage.getItem('profile'));
     const isOwner = venueSpecs.owner && currentUser && venueSpecs.owner.email === currentUser.email;
 
     return (
         <Container>
-            <Row className="mt-3">
-                <Col>
+            <Row className="mt-3 justify-content-center">
+                <Col md={6} className="text-center my-5">
                     <h2>{venueSpecs.name}</h2>
+                    <div>{renderStars()}</div>
+                    
+                    <div className={styles.carouselContainer}>
+                        <Carousel className={styles.carouselContainer}>
+                            {venueSpecs.media.map((mediaUrl, index) => (
+                                <Carousel.Item key={index}>
+                                    <img
+                                         
+                                        src={mediaUrl}
+                                        alt={`Media ${index}`}
+                                    />
+                                </Carousel.Item>
+                            ))}
+                        </Carousel>
+                    </div>
                 </Col>
             </Row>
-            <div className={styles.carouselContainer}>
-                <Carousel className={styles.carouselContainer}>
-                    {venueSpecs.media.map((mediaUrl, index) => (
-                        <Carousel.Item key={index}>
-                            <img
-                                className="d-block w-100"
-                                src={mediaUrl}
-                                alt={`Media ${index}`}
+            
+            <Row>
+                <Col className="d-flex justify-content-center">
+                    {isOwner ? (
+                        <div>
+                            <button className={`btn mx-2 ${styles.bookEditButton}`} onClick={() => setIsEditing(true)}>Edit Venue</button>
+                            <button className={`btn mx-2 ${styles.deleteButton} ml-2`} onClick={() => deleteVenue(venueSpecs.id, navigate)}>Delete Venue</button>
+                        </div>
+                    ) : (
+                        isUserLoggedIn() ? (
+                            <BookingCalendar 
+                                maxGuests={venueSpecs.maxGuests} 
+                                bookings={venueSpecs.bookings}
+                                venueId={id}
+                                price={venueSpecs.price}
                             />
-                        </Carousel.Item>
-                    ))}
-                </Carousel>
-            </div>
-
-            <Row className="mt-3">
-                <Col>
-                <BookingCalendar 
-                    maxGuests={venueSpecs.maxGuests} 
-                    bookings={venueSpecs.bookings}
-                    venueId={id}
-                    price={venueSpecs.price}
-                />
+                        ) : (
+                            <button 
+                                className="btn btn-primary"
+                                onClick={() => navigate('/login')}
+                            >
+                                Login to Book
+                            </button>
+                        )
+                    )}
                 </Col>
             </Row>
 
@@ -146,14 +180,6 @@ function VenueDetails() {
                     <strong>Manager:</strong> <span>{venueSpecs.owner.name}</span>
                 </Col>
             </Row>
-            {isOwner && (
-                <Row className="mt-3">
-                    <Col>
-                        <button className="btn btn-primary" onClick={() => setIsEditing(true)}>Edit</button>
-                        <button className="btn btn-danger ml-2" onClick={() => deleteVenue(venueSpecs.id, navigate)}>Delete</button>
-                    </Col>
-                </Row>
-            )}
             <Modal show={isEditing} onHide={closeModal}>
                 <Modal.Header closeButton>
                 </Modal.Header>
@@ -173,15 +199,19 @@ function VenueDetails() {
                 <Row className="mt-3">
                     <Col>
                         <h5>Upcoming Bookings:</h5>
-                        <ul>
-                            {venueSpecs.bookings.map((booking, index) => (
-                                <li key={index}>
-                                    From: {new Date(booking.dateFrom).toLocaleDateString()} - 
-                                    To: {new Date(booking.dateTo).toLocaleDateString()} | 
-                                    Guests: {booking.guests}
-                                </li>
-                            ))}
-                        </ul>
+                        {venueSpecs.bookings.length > 0 ? (
+                            <div>
+                                {venueSpecs.bookings.map((booking, index) => (
+                                    <div key={index}>
+                                        Dates: {new Date(booking.dateFrom).toLocaleDateString()} - 
+                                        {new Date(booking.dateTo).toLocaleDateString()} | 
+                                        Guests: {booking.guests}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p>You have no bookings yet for this venue.</p>
+                        )}
                     </Col>
                 </Row>
             )}
