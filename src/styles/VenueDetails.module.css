@@ -1,6 +1,6 @@
 .carouselContainer {
-    height: 400px;  
-    width: 600px;   
+    height: 30vh;
+    width: 100%; 
     margin: 0 auto; 
     overflow: hidden; 
 }
@@ -10,3 +10,26 @@
     height: 100%;
     object-fit: cover; 
 }
+
+.bookEditButton {
+    background-color: #113A8C;
+    border: none;
+    color: white;
+}
+
+.deleteButton {
+    background-color: #BFAEA7;
+    border: none;
+}
+
+li {
+    list-style: none
+}
+
+@media (max-width: 576px) {
+    .carouselContainer {
+        height: 50vw;  
+    }
+}
+
+
