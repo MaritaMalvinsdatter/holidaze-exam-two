@@ -87,10 +87,11 @@ function BookingCalendar({ maxGuests, bookings, venueId, price }) {
 
                 <div className={styles.datePickers}>
                     <Row>
-                        <Col xs={6}>
+                        <Col xs={12} md={6}>
                             <div className="d-flex flex-column align-items-center">
                                 <label>Check-in:</label>
                                 <DatePicker 
+                                    className={styles.inputField}
                                     selected={startDate}
                                     onChange={date => setStartDate(date)}
                                     selectsStart
@@ -100,10 +101,11 @@ function BookingCalendar({ maxGuests, bookings, venueId, price }) {
                                 />
                             </div>
                         </Col>
-                        <Col xs={6}>
+                        <Col xs={12} md={6}>
                             <div className="d-flex flex-column align-items-center">
                                 <label>Check-out:</label>
                                 <DatePicker 
+                                    className={styles.inputField}
                                     selected={endDate}
                                     onChange={date => setEndDate(date)}
                                     selectsEnd
@@ -119,7 +121,7 @@ function BookingCalendar({ maxGuests, bookings, venueId, price }) {
                         <Col>
                             <div className="d-flex flex-column align-items-center">
                                 <label>Guests:</label>
-                                <select value={guests} onChange={handleGuestChange}>
+                                <select value={guests} onChange={handleGuestChange} className={styles.inputField}>
                                     {Array.from({ length: maxGuests }).map((_, i) => (
                                         <option key={i} value={i + 1}>{i + 1}</option>
                                     ))}
@@ -137,7 +139,7 @@ function BookingCalendar({ maxGuests, bookings, venueId, price }) {
 
             </Container>
             
-            <button onClick={handleBookClick} className={styles.bookButton}>Book</button>
+            <button onClick={handleBookClick} className={`btn mt-2 ${styles.bookEditButton}`}>Book</button>
         </div>
     );
     
