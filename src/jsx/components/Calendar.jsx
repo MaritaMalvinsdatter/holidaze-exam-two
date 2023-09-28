@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { API_BASE, API_BOOKINGS } from '../EndPoints';
 import { getTotalPrice } from '../ApiHelper';
 import styles from '../../styles/Calendar.module.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Alert,Container, Row, Col } from 'react-bootstrap';
 
 
 
@@ -13,6 +13,7 @@ function BookingCalendar({ maxGuests, bookings, venueId, price }) {
     const [endDate, setEndDate] = useState(null);
     const [guests, setGuests] = useState(1);
     const [bookedDates, setBookedDates] = useState([]);
+    const [bookingMessage, setBookingMessage] = useState(null);
   
     useEffect(() => {
       // Fetching all booked dates from the bookings data
@@ -63,17 +64,20 @@ function BookingCalendar({ maxGuests, bookings, venueId, price }) {
                   venueId: bookingData.venueId
               })
           });
-  
-          if (!response.ok) {
-              const errorData = await response.json();
-              console.error("Error response from server:", errorData);
-          } else {
-              const responseBody = await response.json();
-              console.log("Booking saved:", responseBody);
-          }
-      } catch (error) {
-          console.error("Error saving booking:", error);
-      }
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error response from server:", errorData);
+                setBookingMessage('Error: Unable to book. Please try again.');
+            } else {
+                const responseBody = await response.json();
+                console.log("Booking saved:", responseBody);
+                setBookingMessage('Booking Successful');
+            }
+        } catch (error) {
+            console.error("Error saving booking:", error);
+            setBookingMessage('Error: Unable to book. Please try again.');
+        }
     }
 
     return (
@@ -140,6 +144,13 @@ function BookingCalendar({ maxGuests, bookings, venueId, price }) {
             </Container>
             
             <button onClick={handleBookClick} className={`btn mt-2 ${styles.bookEditButton}`}>Book</button>
+            
+            {bookingMessage && (
+            <Alert variant={bookingMessage.includes('Error') ? 'danger' : 'success'} className="mt-2">
+                {bookingMessage}
+            </Alert>
+            )}
+
         </div>
     );
     
