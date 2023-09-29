@@ -98,7 +98,7 @@ const LoginForm = () => {
               <Alert variant="danger">{formik.errors.password}</Alert>
             ) : null}
           </div>
-          <Button type="submit">Login</Button>
+          <Button type="submit" variant="primary" className="primary-button">Login</Button>
           {error && <Alert variant="danger">{error}</Alert>}
         </Form>
         <p className="mt-3 text-center">
