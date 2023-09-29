@@ -34,7 +34,12 @@ export function useApiHelper() {
     setToken(null); 
   };
 
-  return { user, token, saveUserAndToken, clearUserAndToken };
+  const logout = () => {
+    clearUserAndToken();
+    window.location.href = "/"; 
+  };
+
+  return { user, token, saveUserAndToken, clearUserAndToken, logout };
 }
 
 export async function apiRequest(url, options = {}, token = null) {
@@ -63,14 +68,6 @@ export async function apiRequest(url, options = {}, token = null) {
 
 }
 
-export const logout = () => {
-  // Clear user and token from local storage
-  localStorage.removeItem("token");
-  localStorage.removeItem("profile");
-  window.location.href = "/"; 
-};
-
- 
 
 export const getTotalPrice = (startDate, endDate, nightlyPrice) => {
   if (!startDate || !endDate || !nightlyPrice) return 0;
