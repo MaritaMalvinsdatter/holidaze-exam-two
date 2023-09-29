@@ -1,13 +1,13 @@
 // Layout.jsx
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './Header.jsx';
+import Nav from './Nav.jsx';
 import Footer from './Footer.jsx';
 
 function Layout() {
   return (
     <div>
-      <Header />
+      <Nav />
       <Outlet />
       <Footer />
     </div>
