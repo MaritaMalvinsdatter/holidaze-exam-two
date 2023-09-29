@@ -7,7 +7,7 @@ import { API_BASE, API_LOGIN } from '../EndPoints';
 import { useApiHelper } from '../ApiHelper'; 
 
 const LoginForm = () => {
-  const { saveUserAndToken, refreshTokenState } = useApiHelper(); 
+  const { saveUserAndToken } = useApiHelper(); 
   const navigate = useNavigate();
   const [error, setError] = useState(null);
 
@@ -53,11 +53,10 @@ const LoginForm = () => {
           const userData = { name, email, avatar, venueManager };
   
           saveUserAndToken(userData, accessToken);
-          refreshTokenState(); 
-          // window.location.reload();
           setTimeout(() => {
             navigate('/profile');
-          }, 100);
+            window.location.reload();
+        }, 100);
   
           console.log('User logged in:', userData);
         } else {

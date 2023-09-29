@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { API_BASE, API_PROFILE } from '../EndPoints';
 import { Container, Row, Col, Card, Button, Form  } from 'react-bootstrap';
 import { getTotalPrice } from '../ApiHelper';
+// import { useApiHelper } from '../ApiHelper';
 import { Link, useNavigate } from 'react-router-dom'; 
 import styles from '../../styles/Profile.module.css';
 
@@ -10,6 +11,7 @@ function ProfilePage() {
     const [error, setError] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [newAvatarURL, setNewAvatarURL] = useState('');
+    // const { logout } = useApiHelper();
     const navigate = useNavigate();
     const navigateToVenueDetails = (venueId) => {
         navigate(`/venue/${venueId}`);
@@ -165,14 +167,14 @@ function ProfilePage() {
                         <>
                             <p className="font-weight-bold">Venue Manager</p>
                             <Link to="/create-venue">
-                                <button>Create New Venue</button>
+                                <Button variant="primary">Create New Venue</Button>
                             </Link>
                         </> :
                         <button onClick={handleBecomeManager}>Become a Venue Manager</button>
                     }
                 </Col> 
                 {/* <Col xs={12}>
-                    <button onClick={logout}>Logout</button>
+                    <Button variant="danger" onClick={logout}>Logout</Button>
                 </Col> */}
             </Row>
 

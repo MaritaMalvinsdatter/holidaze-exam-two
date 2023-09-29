@@ -10,7 +10,7 @@ function Nav() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    setIsLoggedIn(!!token);  // Update isLoggedIn based on the token value
+    setIsLoggedIn(!!token); 
   }, [token]);
 
   const handleLogout = () => {
