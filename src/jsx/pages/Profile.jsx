@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE, API_PROFILE } from '../EndPoints';
 import { Container, Row, Col, Card, Button, Form  } from 'react-bootstrap';
-import { logout, getTotalPrice } from '../ApiHelper';
+import { getTotalPrice } from '../ApiHelper';
 import { Link, useNavigate } from 'react-router-dom'; 
 import styles from '../../styles/Profile.module.css';
 
@@ -172,9 +172,9 @@ function ProfilePage() {
                         <button onClick={handleBecomeManager}>Become a Venue Manager</button>
                     }
                 </Col> 
-                <Col xs={12}>
+                {/* <Col xs={12}>
                     <button onClick={logout}>Logout</button>
-                </Col>
+                </Col> */}
             </Row>
 
             <Col xs={12}>
