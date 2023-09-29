@@ -39,7 +39,12 @@ export function useApiHelper() {
     window.location.href = "/"; 
   };
 
-  return { user, token, saveUserAndToken, clearUserAndToken, logout };
+  const refreshTokenState = () => {
+    const storedToken = storage.load('token');
+    setToken(storedToken);
+  };
+
+  return { user, token, saveUserAndToken, clearUserAndToken, logout, refreshTokenState };
 }
 
 export async function apiRequest(url, options = {}, token = null) {

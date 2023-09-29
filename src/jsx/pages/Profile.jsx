@@ -44,7 +44,6 @@ function ProfilePage() {
                     setError(error); 
             }
         };
-    
         fetchUser();
     }, []);
     

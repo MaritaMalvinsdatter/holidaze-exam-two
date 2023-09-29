@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav as BootstrapNav, Container } from 'react-bootstrap';
 import styles from '../../styles/Nav.module.css';
@@ -7,13 +7,16 @@ import { useApiHelper } from '../ApiHelper';
 function Nav() {
   const { token, logout } = useApiHelper(); 
   console.log('Nav rendering', token);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    setIsLoggedIn(!!token);  // Update isLoggedIn based on the token value
   }, [token]);
 
   const handleLogout = () => {
     logout();  
   };
+
   return (
     <Navbar collapseOnSelect expand="lg" className={styles.navbar}>
       <Container>
@@ -28,13 +31,13 @@ function Nav() {
               <BootstrapNav.Item>
                   <BootstrapNav.Link as={Link} to="/" className={styles.navLink}>Home</BootstrapNav.Link>
               </BootstrapNav.Item>
-              {token && (  // If user is logged in display profile
+              {isLoggedIn && (  // If user is logged in display profile
                 <BootstrapNav.Item>
                     <BootstrapNav.Link as={Link} to="/profile" className={styles.navLink}>Profile</BootstrapNav.Link>
                 </BootstrapNav.Item>
               )}
               <BootstrapNav.Item>
-                  {token ? (
+                  {isLoggedIn ? (
                     // If user is logged in show log out
                     <BootstrapNav.Link onClick={handleLogout} className={styles.navLink}>Log Out</BootstrapNav.Link>
                   ) : (
