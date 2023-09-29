@@ -1,9 +1,14 @@
 /* GlobalStyles.css */
-body {
+
+h1,
+h2,
+h3,
+h4,
+h5 {
     font-family: 'Lora', serif;
     font-weight: 500;
 }
 
 .primary-button {
-    color: #113A8C;
+    background-color: #113A8C;
 }
