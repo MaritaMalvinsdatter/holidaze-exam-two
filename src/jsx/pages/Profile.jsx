@@ -67,7 +67,7 @@ function ProfilePage() {
                 <Row className="justify-content-center text-center mb-5">
                     <Col xs={12}>
                         <p>You need to be logged in to view your profile</p>
-                        <Button variant="primary" onClick={navigateToLogin}>Login</Button>
+                        <Button variant="primary" className="primary-button" onClick={navigateToLogin}>Login</Button>
                     </Col>
                 </Row>
             </Container>
@@ -192,10 +192,10 @@ function ProfilePage() {
                         <>
                             <p className="font-weight-bold">Venue Manager</p>
                             <Link to="/create-venue">
-                                <Button variant="primary">Create New Venue</Button>
+                                <Button variant="primary" className="primary-button">Create New Venue</Button>
                             </Link>
                         </> :
-                        <button onClick={handleBecomeManager}>Become a Venue Manager</button>
+                        <Button onClick={handleBecomeManager} variant="primary" className="primary-button">Become a Venue Manager</Button>
                     }
                 </Col> 
                 {/* <Col xs={12}>
@@ -210,26 +210,32 @@ function ProfilePage() {
             <Row>
                 <Col xs={12} md={6}>
                     <h3 className="text-center">Your Bookings:</h3>
-                    {user.bookings.map((booking) => {
-                        const totalPrice = getTotalPrice(booking.dateFrom, booking.dateTo, booking.venue.price);
-                        return (
-                            <Card key={booking.id} className="mb-3">
-                                <Card.Img variant="top" src={booking.venue.media[0] || '/src/images/blank-profile-picture-gca82a1260_640.png'} />
-                                <Card.Body>
-                                    <Card.Title>{booking.venue.name}</Card.Title>
-                                    <Card.Text>
-                                        <strong>Your Booking Dates:</strong> {new Date(booking.dateFrom).toLocaleDateString()} to {new Date(booking.dateTo).toLocaleDateString()}
-                                        <br />
-                                        <strong>Total Price:</strong> ${totalPrice}
-                                        <br />
-                                        <strong>Guests:</strong> {booking.guests}   
-                                    </Card.Text>
-                                    <Button variant="primary" onClick={() => navigateToVenueDetails(booking.venue.id)}>Details</Button>
-                                </Card.Body>
-                            </Card>
-                        );
-                    })}
-
+                    {user.bookings && user.bookings.length ? (
+                        user.bookings.map((booking) => {
+                            const totalPrice = getTotalPrice(booking.dateFrom, booking.dateTo, booking.venue.price);
+                            return (
+                                <Card key={booking.id} className="mb-3">
+                                    <Card.Img variant="top" src={booking.venue.media[0] || '/src/images/blank-profile-picture-gca82a1260_640.png'} />
+                                    <Card.Body>
+                                        <Card.Title>{booking.venue.name}</Card.Title>
+                                        <Card.Text>
+                                            <strong>Your Booking Dates:</strong> {new Date(booking.dateFrom).toLocaleDateString()} to {new Date(booking.dateTo).toLocaleDateString()}
+                                            <br />
+                                            <strong>Total Price:</strong> ${totalPrice}
+                                            <br />
+                                            <strong>Guests:</strong> {booking.guests}   
+                                        </Card.Text>
+                                        <Button variant="primary" className="primary-button" onClick={() => navigateToVenueDetails(booking.venue.id)}>Details</Button>
+                                    </Card.Body>
+                                </Card>
+                            );
+                        })
+                    ) : (
+                        <div className="text-center">
+                            <p>You have no bookings yet.</p>
+                            <Link to="/">Explore venues to book</Link>
+                        </div>
+                    )}
                 </Col>
 
                 <Col xs={12} md={6} style={{ borderLeft: '1px solid #dee2e6' }}>
@@ -242,16 +248,35 @@ function ProfilePage() {
                                     <Card.Title>{venue.name}</Card.Title>
                                     <Card.Text>
                                         {venue.description}
+                                        <br />
                                         <strong>Max Guests:</strong> {venue.maxGuests}
                                         <br />
                                         <strong>Price pr Night:</strong> {venue.price}
                                     </Card.Text>
-                                    <Button variant="primary" onClick={() => navigateToVenueDetails(venue.id)}>Details</Button>
+                                    <Button variant="primary" className="primary-button" onClick={() => navigateToVenueDetails(venue.id)}>Details</Button>
                                 </Card.Body>
                             </Card>
                         ))
                     ) : (
+                        <div className="text-center">
                         <p>You manage no venues.</p>
+                        {user.venueManager ? (
+                            <Link to="/create-venue" style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
+                                Create a New Venue
+                            </Link>
+                        ) : (
+                            <Link 
+                                to="#" 
+                                onClick={(e) => {
+                                    e.preventDefault(); // Prevent navigation
+                                    handleBecomeManager();
+                                }} 
+                                style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} 
+                            >
+                                Become a Venue Manager
+                            </Link>
+                        )}
+                    </div>
                     )}
                 </Col>
             </Row> 

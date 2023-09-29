@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { API_BASE, API_BOOKINGS } from '../EndPoints';
 import { getTotalPrice } from '../ApiHelper';
 import styles from '../../styles/Calendar.module.css';
-import { Alert,Container, Row, Col } from 'react-bootstrap';
+import { Alert,Container, Row, Col, Button } from 'react-bootstrap';
 
 
 
@@ -143,7 +143,8 @@ function BookingCalendar({ maxGuests, bookings, venueId, price }) {
 
             </Container>
             
-            <button onClick={handleBookClick} className={`btn mt-2 ${styles.bookEditButton}`}>Book</button>
+            <Button onClick={handleBookClick} className="mt-2 primary-button" variant="primary">Book Venue</Button>
+
             
             {bookingMessage && (
             <Alert variant={bookingMessage.includes('Error') ? 'danger' : 'success'} className="mt-2">

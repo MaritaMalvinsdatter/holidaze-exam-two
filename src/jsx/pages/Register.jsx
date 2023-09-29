@@ -117,7 +117,7 @@ const RegisterForm = () => {
               {...formik.getFieldProps('venueManager')}
             />
           </div>
-          <Button type="submit">Register</Button>
+          <Button type="submit" variant="primary" className="primary-button">Register</Button>
           {error && <Alert variant="danger">{error}</Alert>}
         </Form>
       </div>
