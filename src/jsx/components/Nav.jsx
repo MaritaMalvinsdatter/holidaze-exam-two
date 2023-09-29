@@ -6,7 +6,6 @@ import { useApiHelper } from '../ApiHelper';
 
 function Nav() {
   const { token, logout } = useApiHelper(); 
-  console.log('Nav rendering', token);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -18,7 +17,7 @@ function Nav() {
   };
 
   return (
-    <Navbar collapseOnSelect expand="lg" className={styles.navbar}>
+    <Navbar collapseOnSelect expand="lg" className={`${styles.navbar} border-bottom`}>
       <Container>
         <Navbar.Brand>
           <Link to="/" className={styles.logoLink}>
