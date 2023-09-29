@@ -128,8 +128,8 @@ function VenueDetails() {
                 <Col className="d-flex justify-content-center">
                     {isOwner ? (
                         <div>
-                            <button className={`btn mx-2 ${styles.bookEditButton}`} onClick={() => setIsEditing(true)}>Edit Venue</button>
-                            <button className={`btn mx-2 ${styles.deleteButton} ml-2`} onClick={() => deleteVenue(venueSpecs.id, navigate)}>Delete Venue</button>
+                            <Button variant="primary" className="mx-2 primary-button" onClick={() => setIsEditing(true)}>Edit Venue</Button>
+                            <Button variant="danger" className={`mx-2 ml-2 ${styles.deleteButton}`} onClick={() => deleteVenue(venueSpecs.id, navigate)}>Delete Venue</Button>
                         </div>
                     ) : (
                         isUserLoggedIn() ? (
@@ -140,12 +140,12 @@ function VenueDetails() {
                                 price={venueSpecs.price}
                             />
                         ) : (
-                            <button 
-                                className="btn btn-primary"
+                            <Button 
+                                variant="primary"
                                 onClick={() => navigate('/login')}
                             >
                                 Login to Book
-                            </button>
+                            </Button>
                         )
                     )}
                 </Col>
