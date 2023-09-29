@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Modal } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { API_BASE, API_REGISTER } from '../EndPoints';
-import { apiRequest, useApiHelper } from '../ApiHelper';
+import { useApiHelper } from '../ApiHelper';
 
 const RegisterForm = () => {
   const { saveUserAndToken } = useApiHelper(); 
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const validationSchema = yup.object({
     name: yup.string().required('Name is required'),
@@ -34,18 +35,27 @@ const RegisterForm = () => {
     validationSchema: validationSchema,
     
     onSubmit: async (values) => {
-        console.log('Form Values:', values);
+      console.log('Form Values:', values);
       try {
         const registerURL = API_BASE + API_REGISTER;
-        const response = await apiRequest(registerURL, {
-          method: 'post',
+        const response = await fetch(registerURL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify(values),
         });
-
+  
         if (response.ok) {
-          const { userData, authToken } = response;
-          saveUserAndToken(userData, authToken);
-          navigate('/login');
+          const data = await response.json();
+          const { name, email, avatar, venueManager } = data; 
+  
+          const userData = { name, email, avatar, venueManager };
+  
+          saveUserAndToken(userData, null); 
+          setShowModal(true);
+  
+          console.log('User registered:', userData);
         } else {
           setError('Something went wrong, please try again');
         }
@@ -53,7 +63,8 @@ const RegisterForm = () => {
         console.error('Registration Error:', error);
         setError('Something went wrong, please try again'); 
       }
-    },
+  }
+  
   });
 
   return (
@@ -121,6 +132,17 @@ const RegisterForm = () => {
           {error && <Alert variant="danger">{error}</Alert>}
         </Form>
       </div>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>Registration Success</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>Thank you for registering! You may now log in.</Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={() => navigate('/login')}>
+          Go to Login
+        </Button>
+      </Modal.Footer>
+    </Modal>
     </div>
     
   );

@@ -20,11 +20,11 @@ export function useApiHelper() {
     }
  }, [setUser, setToken]);
 
-  const saveUserAndToken = (userData, authToken) => {
+  const saveUserAndToken = (userData, token) => {
     storage.save('profile', userData);
-    storage.save('token', authToken);
+    storage.save('token', token);
     setUser(userData); 
-    setToken(authToken); 
+    setToken(token); 
   };
 
   const clearUserAndToken = () => {
