@@ -9,6 +9,7 @@ import VenueDetails from '../src/jsx/pages/VenueDetails.jsx';
 import VenueForm from './jsx/pages/VenueForm.jsx';
 import ErrorPage from '../src/jsx/components/ErrorPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/GlobalStyles.css';
 
 function App() {
   return (

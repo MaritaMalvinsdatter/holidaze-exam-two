@@ -1,0 +1,9 @@
+/* GlobalStyles.css */
+body {
+    font-family: 'Lora', serif;
+    font-weight: 500;
+}
+
+.primary-button {
+    color: #113A8C;
+}
