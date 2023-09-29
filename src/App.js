@@ -7,6 +7,7 @@ import RegisterForm from '../src/jsx/pages/Register.jsx';
 import ProfilePage from '../src/jsx/pages/Profile.jsx';
 import VenueDetails from '../src/jsx/pages/VenueDetails.jsx';
 import VenueForm from './jsx/pages/VenueForm.jsx';
+import ErrorPage from '../src/jsx/components/ErrorPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="register" element={<RegisterForm />} />
           <Route path="create-venue" element={<VenueForm />} />
           <Route path="venue/:id" element={<VenueDetails />} />
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
     </React.StrictMode>

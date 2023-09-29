@@ -11,6 +11,7 @@ function ProfilePage() {
     const [error, setError] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [newAvatarURL, setNewAvatarURL] = useState('');
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
     // const { logout } = useApiHelper();
     const navigate = useNavigate();
     const navigateToVenueDetails = (venueId) => {
@@ -23,13 +24,13 @@ function ProfilePage() {
                 const token = localStorage.getItem("token");
                 const storedProfile = JSON.parse(localStorage.getItem("profile"));
                 const requestUrl = `${API_BASE}${API_PROFILE}${storedProfile.name}?_bookings=true&_venues=true`;
-    
+
                 const response = await fetch(requestUrl, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-        
+
                 if (!response.ok) {
                     if(response.status === 500) {
                         throw new Error("We're having trouble processing your request. Please try again later.");
@@ -37,17 +38,41 @@ function ProfilePage() {
                         throw new Error(`Server responded with a status: ${response.status}`);
                     }
                 }
-        
+
                 const userData = await response.json();
                 console.log(userData);
                 setUser(userData);
-                } catch (error) {
-                    console.error("Error fetching user data:", error);
-                    setError(error); 
+                setIsAuthenticated(true); 
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                setError(error);
             }
         };
-        fetchUser();
-    }, []);
+
+        const token = localStorage.getItem("token");
+        if (token) {
+            fetchUser();
+        } else {
+            setIsAuthenticated(false);
+        }
+    }, [navigate]); 
+
+    const navigateToLogin = () => {
+        navigate('/login');
+    };
+
+    if (isAuthenticated === false) {
+        return (
+            <Container>
+                <Row className="justify-content-center text-center mb-5">
+                    <Col xs={12}>
+                        <p>You need to be logged in to view your profile</p>
+                        <Button variant="primary" onClick={navigateToLogin}>Login</Button>
+                    </Col>
+                </Row>
+            </Container>
+        );
+    }
     
     // User can become manager after registering
     const handleBecomeManager = async () => {
