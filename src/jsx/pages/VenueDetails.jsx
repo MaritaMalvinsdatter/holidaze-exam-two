@@ -203,8 +203,7 @@ function VenueDetails() {
                             <div>
                                 {venueSpecs.bookings.map((booking, index) => (
                                     <div key={index}>
-                                        Dates: {new Date(booking.dateFrom).toLocaleDateString()} - 
-                                        {new Date(booking.dateTo).toLocaleDateString()} | 
+                                        Dates: {new Date(booking.dateFrom).toLocaleDateString()} -  {new Date(booking.dateTo).toLocaleDateString()} | 
                                         Guests: {booking.guests}
                                     </div>
                                 ))}
