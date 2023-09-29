@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav as BootstrapNav, Container } from 'react-bootstrap';
 import styles from '../../styles/Nav.module.css';
-import { useApiHelper, logout } from '../ApiHelper';
+import { useApiHelper } from '../ApiHelper';
 
 function Nav() {
-  const { token } = useApiHelper(); 
+  const { token, logout } = useApiHelper(); 
+  console.log('Nav rendering', token);
+
+  useEffect(() => {
+  }, [token]);
 
   const handleLogout = () => {
     logout();  

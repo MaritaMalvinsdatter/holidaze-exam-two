@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -7,9 +7,16 @@ import { API_BASE, API_LOGIN } from '../EndPoints';
 import { useApiHelper } from '../ApiHelper'; 
 
 const LoginForm = () => {
-  const { saveUserAndToken } = useApiHelper(); 
+  const { saveUserAndToken, token } = useApiHelper(); 
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (token) {
+      // If token exists, navigate to /profile
+      navigate('/profile');
+    }
+  }, [token, navigate]);
 
   const validationSchema = yup.object({
     email: yup
@@ -53,7 +60,9 @@ const LoginForm = () => {
           const userData = { name, email, avatar, venueManager };
   
           saveUserAndToken(userData, accessToken); 
-          navigate('/profile');
+          setTimeout(() => {
+            navigate('/profile');
+          }, 100);
   
           console.log('User logged in:', userData);
         } else {
