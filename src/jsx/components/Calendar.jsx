@@ -82,70 +82,69 @@ function BookingCalendar({ maxGuests, bookings, venueId, price }) {
 
     return (
         <div className="d-flex flex-column align-items-center">
-            <Container className={styles.bookingBox}>
-
-                <div className={styles.infoTopLeft}>
-                    <div>Price per night: ${price}</div>
-                    <div>Max Guests: {maxGuests}</div>
-                </div>
-
-                <div className={styles.datePickers}>
-                    <Row>
-                        <Col xs={12} md={6}>
-                            <div className="d-flex flex-column align-items-center">
-                                <label>Check-in:</label>
-                                <DatePicker 
-                                    className={styles.inputField}
-                                    selected={startDate}
-                                    onChange={date => setStartDate(date)}
-                                    selectsStart
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    excludeDates={bookedDates}
-                                />
-                            </div>
-                        </Col>
-                        <Col xs={12} md={6}>
-                            <div className="d-flex flex-column align-items-center">
-                                <label>Check-out:</label>
-                                <DatePicker 
-                                    className={styles.inputField}
-                                    selected={endDate}
-                                    onChange={date => setEndDate(date)}
-                                    selectsEnd
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    minDate={startDate}
-                                    excludeDates={bookedDates}
-                                />
-                            </div>
-                        </Col>
-                    </Row>
+            <div className={styles.shadow}>
+                <Container className={styles.bookingBox}>
+                    <div className={styles.infoTopLeft}>
+                        <div> <strong>Price per night:</strong> ${price}</div>
+                        <div> <strong>Max Guests:</strong> {maxGuests}</div>
+                    </div>
+                    <div className={styles.datePickers}>
+                        <Row>
+                            <Col xs={12} md={6}>
+                                <div className="d-flex flex-column align-items-center">
+                                    <label>Check-in:</label>
+                                    <DatePicker 
+                                        className={styles.inputField}
+                                        selected={startDate}
+                                        onChange={date => setStartDate(date)}
+                                        selectsStart
+                                        startDate={startDate}
+                                        endDate={endDate}
+                                        excludeDates={bookedDates}
+                                    />
+                                </div>
+                            </Col>
+                            <Col xs={12} md={6}>
+                                <div className="d-flex flex-column align-items-center">
+                                    <label>Check-out:</label>
+                                    <DatePicker 
+                                        className={styles.inputField}
+                                        selected={endDate}
+                                        onChange={date => setEndDate(date)}
+                                        selectsEnd
+                                        startDate={startDate}
+                                        endDate={endDate}
+                                        minDate={startDate}
+                                        excludeDates={bookedDates}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row className="mt-2">
+                            <Col>
+                                <div className="d-flex flex-column align-items-center">
+                                    <label>Guests:</label>
+                                    <select value={guests} onChange={handleGuestChange} className={styles.inputField}>
+                                        {Array.from({ length: maxGuests }).map((_, i) => (
+                                            <option key={i} value={i + 1}>{i + 1}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
                     <Row className="mt-2">
                         <Col>
-                            <div className="d-flex flex-column align-items-center">
-                                <label>Guests:</label>
-                                <select value={guests} onChange={handleGuestChange} className={styles.inputField}>
-                                    {Array.from({ length: maxGuests }).map((_, i) => (
-                                        <option key={i} value={i + 1}>{i + 1}</option>
-                                    ))}
-                                </select>
-                            </div>
+                            <div> <strong>Total:</strong> ${getTotalPrice(startDate, endDate, price)}</div>
                         </Col>
                     </Row>
-                </div>
-
-                <Row className="mt-2">
-                    <Col>
-                        <div>Total: ${getTotalPrice(startDate, endDate, price)}</div>
-                    </Col>
-                </Row>
-
-            </Container>
-            
-            <Button onClick={handleBookClick} className="mt-2 primary-button" variant="primary">Book Venue</Button>
-
-            
+                    <Row className="mt-2 text-center">
+                        <Col>
+                            <Button onClick={handleBookClick} className="my-2 primary-button" variant="primary">Book Venue</Button>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
             {bookingMessage && (
             <Alert variant={bookingMessage.includes('Error') ? 'danger' : 'success'} className="mt-2">
                 {bookingMessage}

@@ -1,6 +1,6 @@
 .bookingBox {
     position: relative;
-    padding: 15px;
+    padding: 5px 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
     width: 100%;
@@ -16,9 +16,10 @@
     flex-direction: column;
     align-items: center;
     padding: 15px;
-    margin: 0 auto; 
+    margin: 10px auto; 
     margin-bottom: 10px;
     border: 1px solid grey;
+    border-radius: 5px;
 }
 
 .inputField {
@@ -34,12 +35,9 @@
     color: white;
 }
 
-/* .display-flex {
-    display: flex;
-    justify-content: center; 
-    align-items: center;    
-    flex-direction: column;  
-} */
+.shadow {
+    box-shadow: 8px 8px 10px 0 rgba(0, 0, 0, 0.2);
+}
 
 @media (min-width: 576px) {
     .mt-2 {

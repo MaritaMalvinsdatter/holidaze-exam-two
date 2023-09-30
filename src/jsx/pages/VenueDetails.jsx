@@ -104,11 +104,11 @@ function VenueDetails() {
     return (
         <Container>
             <div className={styles.sectionBooking}>
-            <Row className="mt-3 justify-content-center">
+                <Row className="mt-3 px-lg-4 justify-content-center">
                     <h2 className="text-center w-100">{venueSpecs.name}</h2> 
                     <div className="text-center w-100">{renderStars()}</div> 
                     <Col xs={12} md={isOwner ? 12 : 6} className={`text-center my-5 ${isOwner ? styles.managerView : ''}`}>
-                        <div className={styles.carouselContainer}>
+                        <div className={`${styles.carouselContainer} ${styles.shadow}`}>
                             <Carousel className={styles.carouselContainer}>
                                 {venueSpecs.media.map((mediaUrl, index) => (
                                     <Carousel.Item key={index}>
@@ -126,22 +126,23 @@ function VenueDetails() {
                     </Col>
                     {!isOwner && (
                         <Col xs={12} md={6} className="my-5">
-                            {isUserLoggedIn() ? (
-                                <BookingCalendar 
-                                    maxGuests={venueSpecs.maxGuests} 
-                                    bookings={venueSpecs.bookings}
-                                    venueId={id}
-                                    price={venueSpecs.price}
-                                />
-                            ) : (
-                                <Button 
-                                    variant="primary"
-                                    className="w-100"
-                                    onClick={() => navigate('/login')}
-                                >
-                                    Login to Book
-                                </Button>
-                            )}
+                                {isUserLoggedIn() ? (
+                                    <BookingCalendar 
+                                        className={styles.shadow}
+                                        maxGuests={venueSpecs.maxGuests} 
+                                        bookings={venueSpecs.bookings}
+                                        venueId={id}
+                                        price={venueSpecs.price}
+                                    />
+                                ) : (
+                                    <Button 
+                                        variant="primary"
+                                        className="w-100"
+                                        onClick={() => navigate('/login')}
+                                    >
+                                        Login to Book
+                                    </Button>
+                                )}
                         </Col>
                     )}
                 </Row>
