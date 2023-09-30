@@ -1,25 +1,25 @@
+.managerView .carouselContainer {
+    height: 45vh; 
+    width: 80%;
+}
+
 .carouselContainer {
     height: 30vh;
-    width: 100%; 
-    margin: 0 auto; 
-    overflow: hidden; 
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 .carouselContainer img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
 .bookEditButton {
     background-color: #113A8C;
     border: none;
     color: white;
-}
-
-.deleteButton {
-    background-color: #BFAEA7;
-    border: none;
 }
 
 li {
@@ -35,10 +35,16 @@ li {
     color: inherit;
 }
 
-@media (max-width: 576px) {
-    .carouselContainer {
-        height: 50vw;  
+@media (max-width: 767px) { 
+    .mtSmall {
+        margin-top: 1.5rem;
+    }
+
+    .managerView .carouselContainer {
+        height: 30vh; 
+        width: 100%;
     }
 }
+
 
 

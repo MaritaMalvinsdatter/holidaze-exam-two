@@ -104,36 +104,29 @@ function VenueDetails() {
     return (
         <Container>
             <div className={styles.sectionBooking}>
-                <Row className="mt-3 justify-content-center">
-                    <Col md={6} className="text-center my-5">
-                        <h2>{venueSpecs.name}</h2>
-                        <div>{renderStars()}</div>
-                        
+            <Row className="mt-3 justify-content-center">
+                    <h2 className="text-center w-100">{venueSpecs.name}</h2> 
+                    <div className="text-center w-100">{renderStars()}</div> 
+                    <Col xs={12} md={isOwner ? 12 : 6} className={`text-center my-5 ${isOwner ? styles.managerView : ''}`}>
                         <div className={styles.carouselContainer}>
                             <Carousel className={styles.carouselContainer}>
                                 {venueSpecs.media.map((mediaUrl, index) => (
                                     <Carousel.Item key={index}>
-                                        <img
-                                            
-                                            src={mediaUrl}
-                                            alt={`Media ${index}`}
-                                        />
+                                        <img src={mediaUrl} alt={`Media ${index}`} />
                                     </Carousel.Item>
                                 ))}
                             </Carousel>
                         </div>
-                    </Col>
-                </Row>
-                
-                <Row>
-                    <Col className="d-flex justify-content-center">
-                        {isOwner ? (
-                            <div>
+                        {isOwner && (
+                            <div className="mt-3">
                                 <Button variant="primary" className="mx-2 primary-button" onClick={() => setIsEditing(true)}>Edit Venue</Button>
-                                <Button variant="danger" className={`mx-2 ml-2 ${styles.deleteButton}`} onClick={() => deleteVenue(venueSpecs.id, navigate)}>Delete Venue</Button>
+                                <Button variant="danger" className={`mx-2 ml-2`} onClick={() => deleteVenue(venueSpecs.id, navigate)}>Delete Venue</Button>
                             </div>
-                        ) : (
-                            isUserLoggedIn() ? (
+                        )}
+                    </Col>
+                    {!isOwner && (
+                        <Col xs={12} md={6} className="my-5">
+                            {isUserLoggedIn() ? (
                                 <BookingCalendar 
                                     maxGuests={venueSpecs.maxGuests} 
                                     bookings={venueSpecs.bookings}
@@ -143,13 +136,14 @@ function VenueDetails() {
                             ) : (
                                 <Button 
                                     variant="primary"
+                                    className="w-100"
                                     onClick={() => navigate('/login')}
                                 >
                                     Login to Book
                                 </Button>
-                            )
-                        )}
-                    </Col>
+                            )}
+                        </Col>
+                    )}
                 </Row>
             </div>
 
@@ -158,7 +152,7 @@ function VenueDetails() {
             <div className={styles.sectionDetails}>
                 <Row className="mt-3 mt-md-3 px-2 px-md-5 mx-2 mx-md-5">
                     <h3 className="text-center mb-5 mt-3">About This Venue:</h3>
-                    <Col xs={12} md={6}>
+                    <Col xs={12} md={6} className="px-lg-5">
                         <h5 className="mb-3">Description:</h5>
                         <p>{venueSpecs.description}</p>
                         {isOwner && (
@@ -169,7 +163,7 @@ function VenueDetails() {
                             </Col>
                         )}
                     </Col>
-                    <Col xs={12} md={6} className="pl-md-4" style={{ borderLeft: '1px solid #dee2e6' }}>
+                    <Col xs={12} md={6} className={`${styles.mtSmall} pl-md-4 px-lg-5`} style={{ borderLeft: '1px solid #dee2e6' }}>
                         <Row className="mb-3">
                             <h5 className="mb-3">More:</h5>
                             <Col>
