@@ -26,6 +26,15 @@ li {
     list-style: none
 }
 
+.iconUnavailable, .iconAvailable {
+    color: #c0c0c0 !important; 
+   
+}
+
+.iconAvailable {
+    color: inherit;
+}
+
 @media (max-width: 576px) {
     .carouselContainer {
         height: 50vw;  

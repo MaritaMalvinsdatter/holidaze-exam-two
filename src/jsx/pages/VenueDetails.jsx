@@ -103,100 +103,152 @@ function VenueDetails() {
 
     return (
         <Container>
-            <Row className="mt-3 justify-content-center">
-                <Col md={6} className="text-center my-5">
-                    <h2>{venueSpecs.name}</h2>
-                    <div>{renderStars()}</div>
-                    
-                    <div className={styles.carouselContainer}>
-                        <Carousel className={styles.carouselContainer}>
-                            {venueSpecs.media.map((mediaUrl, index) => (
-                                <Carousel.Item key={index}>
-                                    <img
-                                         
-                                        src={mediaUrl}
-                                        alt={`Media ${index}`}
-                                    />
-                                </Carousel.Item>
-                            ))}
-                        </Carousel>
-                    </div>
-                </Col>
-            </Row>
-            
-            <Row>
-                <Col className="d-flex justify-content-center">
-                    {isOwner ? (
-                        <div>
-                            <Button variant="primary" className="mx-2 primary-button" onClick={() => setIsEditing(true)}>Edit Venue</Button>
-                            <Button variant="danger" className={`mx-2 ml-2 ${styles.deleteButton}`} onClick={() => deleteVenue(venueSpecs.id, navigate)}>Delete Venue</Button>
+            <div className={styles.sectionBooking}>
+                <Row className="mt-3 justify-content-center">
+                    <Col md={6} className="text-center my-5">
+                        <h2>{venueSpecs.name}</h2>
+                        <div>{renderStars()}</div>
+                        
+                        <div className={styles.carouselContainer}>
+                            <Carousel className={styles.carouselContainer}>
+                                {venueSpecs.media.map((mediaUrl, index) => (
+                                    <Carousel.Item key={index}>
+                                        <img
+                                            
+                                            src={mediaUrl}
+                                            alt={`Media ${index}`}
+                                        />
+                                    </Carousel.Item>
+                                ))}
+                            </Carousel>
                         </div>
-                    ) : (
-                        isUserLoggedIn() ? (
-                            <BookingCalendar 
-                                maxGuests={venueSpecs.maxGuests} 
-                                bookings={venueSpecs.bookings}
-                                venueId={id}
-                                price={venueSpecs.price}
-                            />
+                    </Col>
+                </Row>
+                
+                <Row>
+                    <Col className="d-flex justify-content-center">
+                        {isOwner ? (
+                            <div>
+                                <Button variant="primary" className="mx-2 primary-button" onClick={() => setIsEditing(true)}>Edit Venue</Button>
+                                <Button variant="danger" className={`mx-2 ml-2 ${styles.deleteButton}`} onClick={() => deleteVenue(venueSpecs.id, navigate)}>Delete Venue</Button>
+                            </div>
                         ) : (
-                            <Button 
-                                variant="primary"
-                                onClick={() => navigate('/login')}
-                            >
-                                Login to Book
-                            </Button>
-                        )
-                    )}
-                </Col>
-            </Row>
+                            isUserLoggedIn() ? (
+                                <BookingCalendar 
+                                    maxGuests={venueSpecs.maxGuests} 
+                                    bookings={venueSpecs.bookings}
+                                    venueId={id}
+                                    price={venueSpecs.price}
+                                />
+                            ) : (
+                                <Button 
+                                    variant="primary"
+                                    onClick={() => navigate('/login')}
+                                >
+                                    Login to Book
+                                </Button>
+                            )
+                        )}
+                    </Col>
+                </Row>
+            </div>
 
-            <Row className="mt-3">
-                <Col md={6}>
-                    <strong>Created:</strong> {new Date(venueSpecs.created).toLocaleString()}
-                </Col>
-                <Row className="mt-3">
-                <Col>
-                    <strong>Address:</strong> {venueSpecs.location.address}
-                </Col>
-            </Row>
-            <Row className="mt-3">
-                <Col md={6}>
-                    <strong>City:</strong> {venueSpecs.location.city}
-                </Col>
-                <Col md={6}>
-                    <strong>Country:</strong> {venueSpecs.location.country}
-                </Col>
-            </Row>
-            </Row>
-            <Row className="mt-3">
-                <Col>
-                    <strong>Description:</strong>
-                    <p>{venueSpecs.description}</p>
-                </Col>
-            </Row>
-            <Row className="mt-3">
-                <Col>
-                    <strong>Manager:</strong> <span>{venueSpecs.owner.name}</span>
-                </Col>
-            </Row>
-            <Modal show={isEditing} onHide={closeModal}>
-                <Modal.Header closeButton>
-                </Modal.Header>
-                <Modal.Body>
-                    <VenueForm
-                        initialData={venueSpecs}
-                        mode='edit'
-                        onSubmit={handleEditSubmit}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={closeModal}>Close</Button>
-                </Modal.Footer>
-            </Modal>
             <hr />
+
+            <div className={styles.sectionDetails}>
+                <Row className="mt-3 mt-md-3 px-2 px-md-5 mx-2 mx-md-5">
+                    <h3 className="text-center mb-5 mt-3">About This Venue:</h3>
+                    <Col xs={12} md={6}>
+                        <h5 className="mb-3">Description:</h5>
+                        <p>{venueSpecs.description}</p>
+                        {isOwner && (
+                            <Col>
+                                <strong>Price per night:</strong> ${venueSpecs.price}
+                                <br />
+                                <strong>Max guests:</strong> {venueSpecs.maxGuests}
+                            </Col>
+                        )}
+                    </Col>
+                    <Col xs={12} md={6} className="pl-md-4" style={{ borderLeft: '1px solid #dee2e6' }}>
+                        <Row className="mb-3">
+                            <h5 className="mb-3">More:</h5>
+                            <Col>
+                                <strong>Address:</strong> {venueSpecs.location.address}, {venueSpecs.location.city}, {venueSpecs.location.country}
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <strong>Venue Created:</strong> {new Date(venueSpecs.created).toLocaleDateString()}
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <strong>Manager:</strong> <span>{venueSpecs.owner.name}</span>
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <strong>Contact:</strong> <span>{venueSpecs.owner.email}</span>
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <strong>Venue ID:</strong> <span>{venueSpecs.id}</span>
+                            </Col>
+                        </Row>
+                        <div className={styles.iconContainer}>
+                        <Row className="mb-3">
+                            <Col>
+                                <span className={`${venueSpecs.meta.breakfast ? '' : styles.iconUnavailable}`}>
+                                    <i className={`fa-solid fa-mug-saucer mx-1`}></i> Breakfast
+                                </span>
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <span className={`${venueSpecs.meta.parking ? '' : styles.iconUnavailable}`}>
+                                    <i className={`fa-solid fa-square-parking mx-1`}></i> Parking
+                                </span>
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <span className={`${venueSpecs.meta.pets ? '' : styles.iconUnavailable}`}>
+                                    <i className={`fa-solid fa-paw mx-1`}></i> Pets
+                                </span>
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col>
+                                <span className={`${venueSpecs.meta.wifi ? '' : styles.iconUnavailable}`}>
+                                    <i className={`fa-solid fa-wifi mx-1`}></i> Wifi
+                                </span>
+                            </Col>
+                        </Row>
+                    </div>
+                    </Col>
+                </Row>
+                <Modal show={isEditing} onHide={closeModal}>
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <VenueForm
+                            initialData={venueSpecs}
+                            mode='edit'
+                            onSubmit={handleEditSubmit}
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={closeModal}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+
+            </div>
+            
+            <hr />
+
             {isOwner && (
-                <Row className="mt-3">
+                <Row className="mt-3 mt-md-3 px-2 px-md-5 mx-2 mx-md-5">
                     <Col>
                         <h5>Upcoming Bookings:</h5>
                         {venueSpecs.bookings.length > 0 ? (
@@ -214,6 +266,7 @@ function VenueDetails() {
                     </Col>
                 </Row>
             )}
+
         </Container>
     );
 }
