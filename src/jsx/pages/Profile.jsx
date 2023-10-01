@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { API_BASE, API_PROFILE } from '../EndPoints';
 import { Container, Row, Col, Card, Button, Form  } from 'react-bootstrap';
 import { getTotalPrice } from '../ApiHelper';
-// import { useApiHelper } from '../ApiHelper';
 import { Link, useNavigate } from 'react-router-dom'; 
 import styles from '../../styles/Profile.module.css';
 
@@ -198,9 +197,6 @@ function ProfilePage() {
                         <Button onClick={handleBecomeManager} variant="primary" className="primary-button">Become a Venue Manager</Button>
                     }
                 </Col> 
-                {/* <Col xs={12}>
-                    <Button variant="danger" onClick={logout}>Logout</Button>
-                </Col> */}
             </Row>
 
             <Col xs={12}>
@@ -243,7 +239,7 @@ function ProfilePage() {
                     {user.venues && user.venues.length ? (
                         user.venues.map(venue => (
                             <Card className="mb-3" key={venue.id}>
-                                <Card.Img variant="top" src={venue.media[0] || '/path-to-default-image.jpg'} />
+                                <Card.Img variant="top" src={venue.media[0]} />
                                 <Card.Body>
                                     <Card.Title>{venue.name}</Card.Title>
                                     <Card.Text>
@@ -268,7 +264,7 @@ function ProfilePage() {
                             <Link 
                                 to="#" 
                                 onClick={(e) => {
-                                    e.preventDefault(); // Prevent navigation
+                                    e.preventDefault();
                                     handleBecomeManager();
                                 }} 
                                 style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} 

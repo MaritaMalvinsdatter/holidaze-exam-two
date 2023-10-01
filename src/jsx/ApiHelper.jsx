@@ -64,7 +64,7 @@ export async function apiRequest(url, options = {}, token = null) {
   if (response.ok) {
     const text = await response.text();
       if (!text) {
-        return null;  // or {} or whatever you prefer
+        return null; 
       }
         return JSON.parse(text);
     } else {
