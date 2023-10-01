@@ -9,10 +9,17 @@ h5 {
     font-weight: 500;
 }
 
-/* /* buttons */
+/* buttons */
 
 .primary-button {
     background-color: #113A8C;
 }
+
+/* Forms */
+
+.formLabelMargin {
+    margin-top: 20px;
+}
+
 
 

@@ -233,9 +233,9 @@ function VenueDetails() {
                             onSubmit={handleEditSubmit}
                         />
                     </Modal.Body>
-                    <Modal.Footer>
+                    {/* <Modal.Footer>
                         <Button variant="secondary" onClick={closeModal}>Close</Button>
-                    </Modal.Footer>
+                    </Modal.Footer> */}
                 </Modal>
 
             </div>
