@@ -1,4 +1,4 @@
-// Storage.jsx:
+
 export function load(key) {
   try {
     const value = localStorage.getItem(key);
