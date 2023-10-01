@@ -66,19 +66,12 @@ function VenueForm({ initialData = {}, mode = 'create', onSubmit }) {
     };
 
     const handleSubmit = async (values, { setSubmitting }) => {
-        // Remove empty strings from the media array
         const cleanedMedia = values.media.filter(url => url !== "");
-
-        // Create a new values object with the cleaned media array
         const cleanedValues = {
             ...values,
             media: cleanedMedia,
         };
-
-        // Now call your original submit handler with the cleaned values
         await onSubmitHandler(cleanedValues);
-
-        // Set submitting to false once submission is complete
         setSubmitting(false);
     };
 
@@ -164,6 +157,7 @@ function VenueForm({ initialData = {}, mode = 'create', onSubmit }) {
                                             />
                                             {formik.values.media.length > 1 && (
                                                 <Button 
+                                                    className='primary-button mt-2'
                                                     onClick={() => {
                                                         const updatedMedia = [...formik.values.media];
                                                         updatedMedia.splice(index, 1);
