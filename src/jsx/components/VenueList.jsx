@@ -51,7 +51,8 @@ function Venues( {searchTerm }) {
           <Row>
               {Venues.map((Venue) => (
                   <Col xs={12} sm={6} md={4} lg={3} key={Venue.id}>
-                      <Card className={`mb-4 ${styles.positionRelative}`}>
+                      <Card className={`mb-4`}>
+                      <Link to={`/venue/${Venue.id}`}>
                           {Venue.media.length > 0 && (
                               <Card.Img 
                                   variant="top" 
@@ -60,6 +61,7 @@ function Venues( {searchTerm }) {
                                   className={styles.venueListImage} 
                               />
                           )}
+                      </Link>
                           <Card.Body>
                               <Card.Title className={styles.boldText}>
                                   <Link to={`/venue/${Venue.id}`}>{Venue.name}</Link>
