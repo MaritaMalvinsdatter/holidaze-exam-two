@@ -47,9 +47,8 @@ The Product Owner has requested links to the following:
 - A repository link
 - A hosted application demo link
 
-#### Resources:
-
-CSS frameworks:
+#### Buildt With:
+- React
 - Bootstrap
 - CSS Modules
 
@@ -61,3 +60,20 @@ Design applications:
 
 Planning applications:
 - Trello
+
+## Installation / Running:
+
+First clone the repo: 
+
+```bash
+git clone git@github.com:MaritaMalvinsdatter/holidaze-exam-two.git
+```
+
+Then run the following commands in the terminal: 
+
+```bash
+npm install
+npm run start
+npm run build
+
+
