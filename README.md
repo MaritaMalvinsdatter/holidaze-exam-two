@@ -1,5 +1,7 @@
 # Exam Two - Holidaze
 
+![image](https://github.com/MaritaMalvinsdatter/holidaze-exam-two/assets/79151543/39a7ee99-15d4-4470-87e5-3329b055f74e)
+
 ### PAGE: 
 https://holidaze-exam-two.netlify.app/
 
@@ -48,7 +50,7 @@ The Product Owner has requested links to the following:
 #### Resources:
 
 CSS frameworks:
-- Bootstrap (version >5.0.1)
+- Bootstrap
 - CSS Modules
 
 Hosting services:
