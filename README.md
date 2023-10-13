@@ -1,6 +1,6 @@
 # Exam Two - Holidaze
 
-![image](https://github.com/MaritaMalvinsdatter/holidaze-exam-two/assets/79151543/39a7ee99-15d4-4470-87e5-3329b055f74e)
+![image](https://github.com/MaritaMalvinsdatter/holidaze-exam-two/assets/79151543/9b37bdad-841e-4e9a-98d8-ace1ceb69a10)
 
 ### PAGE: 
 https://holidaze-exam-two.netlify.app/
@@ -75,5 +75,3 @@ Then run the following commands in the terminal:
 npm install
 npm run start
 npm run build
-
-
